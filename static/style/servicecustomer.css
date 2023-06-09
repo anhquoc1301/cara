@@ -1,0 +1,75 @@
+#service {
+  background-color: #111423;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+#service .logo {
+  padding: 0 2.5rem;
+  text-align: center;
+  padding: 2rem;
+}
+#service .list-service {
+  padding: 1.5 4rem;
+  min-height: 30rem;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#31385a), to(#111423));
+  font-size: 20px;
+  -webkit-border-radius: 5rem 5rem 0 0;
+  border-radius: 5rem 5rem 0 0;
+  margin-top: 2rem;
+  padding: 5rem;
+}
+#service .list-service .item-service {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #007aff;
+  padding: 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+#service .list-service .item-service:hover {
+  background-color: #40a9ff;
+  cursor: pointer;
+}
+#service .list-service span.name-service {
+  margin-left: 1rem;
+}
+#service .footer-info {
+  position: fixed;
+  height: 50px;
+  background: rgb(27, 30, 47);
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5rem;
+}
+#service .footer-info .item {
+  text-align: center;
+}
+#service .footer-info .item .icon {
+  font-size: 2rem;
+}
+#service .footer-info .item .title {
+  font-size: 1.4rem;
+}
+#service .footer-info .item.active {
+  color: #1890ff;
+}
+#service .footer-info .have-active {
+  display: none;
+}
+#service .footer-info .no-active {
+  display: block;
+}
+#service .footer-info .active .no-active {
+  display: none;
+}
+#service .footer-info .active .have-active {
+  display: block;
+}
+
+/*# sourceMappingURL=servicecustomer.css.map */

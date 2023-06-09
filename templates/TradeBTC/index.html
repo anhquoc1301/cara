@@ -1,0 +1,457 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <link rel="stylesheet" href="{% static 'style/app.css'%}" />
+    <link rel="stylesheet" href="{% static 'style/info.css'%}" />
+    <link rel="stylesheet" href="{% static 'style/index.css'%}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="info" class="info index">
+      <div class="header">
+        <div class="logo">
+          <img src="{% static 'assets/logo.png'%}" alt="" />
+        </div>
+        <div class="carousel-index">
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide"
+            data-ride="carousel"
+          >
+            <ol class="carousel-indicators">
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="0"
+                class="active"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="1"
+              ></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="{% static 'assets/slide1.png'%}"
+                  alt="First123123 slide"
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="{% static 'assets/slide2.png'%}"
+                  alt="Second12321312 slide"
+                />
+              </div>
+            </div>
+            <a
+              class="carousel-control-prev"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a
+              class="carousel-control-next"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="main-container">
+        <div class="first-line">
+          <div class="item">
+            <h1>USTD</h1>
+            <p>5714814</p>
+            <p class="green">11</p>
+          </div>
+          <div class="item">
+            <h1>USTD</h1>
+            <p>5714814</p>
+            <p class="green">11</p>
+          </div>
+          <div class="item">
+            <h1>USTD</h1>
+            <p>5714814</p>
+            <p class="green">11</p>
+          </div>
+        </div>
+        <div class="second-line">
+          <div class="item">
+            <span style="font-size: 2rem">Số dư tài khoản</span>
+            <img src="{% static 'assets/btc.png'%}" width="60" alt="" />
+            <h2>{{user}}</h2>
+          </div>
+          <div class="item-2">
+            <div class="language">
+              <img src="{% static 'assets/language.png'%}" width="20" alt="" />
+              <span>Chọn một ngôn ngữ</span>
+            </div>
+            <div class="center-action">
+              <img src="{% static 'assets/gift.png'%}" width="20" alt="" /> Trung tâm hoạt
+              động
+            </div>
+          </div>
+        </div>
+        <div class="third-line">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="home-tab"
+                data-toggle="tab"
+                href="#home"
+                role="tab"
+                aria-controls="home"
+                aria-selected="true"
+                >Danh sách đạt được</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="profile-tab"
+                data-toggle="tab"
+                href="#profile"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+                >Động lực thị trường</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content motive-market" id="myTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="list-wishes"
+              role="tabpanel"
+              aria-labelledby="home-tab"
+            >
+              <div class="list-item">
+                <div class="item">
+                  <div class="logo">
+                    <img
+                      src="{% static 'assets/20220911f9715b52-c493-406b-992b-771ba22216e5.png'%}"
+                      width="20"
+                      alt=""
+                    />
+                    <span>
+                      <p>ADAUSDC</p>
+                      <p>175473.34</p>
+                    </span>
+                  </div>
+                  <div class="price">0.374541548</div>
+                  <button type="button" class="btn btn-success">
+                    -4.578 %
+                  </button>
+                </div>
+                <div class="item">
+                  <div class="logo">
+                    <img
+                      src="{% static 'assets/20220911f9715b52-c493-406b-992b-771ba22216e5.png'%}"
+                      width="20"
+                      alt=""
+                    />
+                    <span>
+                      <p>ADAUSDC</p>
+                      <p>175473.34</p>
+                    </span>
+                  </div>
+                  <div class="price">0.374541548</div>
+                  <button type="button" class="btn btn-danger">-4.578 %</button>
+                </div>
+                <div class="item">
+                  <div class="logo">
+                    <img src="{% static 'assets/btca.png'%}" width="20" alt="" />
+                    <span>
+                      <p>ADAUSDC</p>
+                      <p>175473.34</p>
+                    </span>
+                  </div>
+                  <div class="price">0.374541548</div>
+                  <button type="button" class="btn btn-danger">-4.578 %</button>
+                </div>
+                <div class="item">
+                  <div class="logo">
+                    <img src="{% static 'assets/btca.png'%}" width="20" alt="" />
+                    <span>
+                      <p>ADAUSDC</p>
+                      <p>175473.34</p>
+                    </span>
+                  </div>
+                  <div class="price">0.374541548</div>
+                  <button type="button" class="btn btn-success">
+                    -4.578 %
+                  </button>
+                </div>
+                <div class="item">
+                  <div class="logo">
+                    <img src="{% static 'assets/usa.png'%}" width="20" alt="" />
+                    <span>
+                      <p>ADAUSDC</p>
+                      <p>175473.34</p>
+                    </span>
+                  </div>
+                  <div class="price">0.374541548</div>
+                  <button type="button" class="btn btn-danger">55.58 %</button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="profile"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+            >
+              <div class="header-table">
+                <p>Người dùng giao dịch</p>
+                <p>Danh mục giao dịch</p>
+                <p>Lợi nhuận vòng hiện tại</p>
+                <p>Ngày giao dịch</p>
+              </div>
+              <div class="list-item-table">
+                <div class="item-table">
+                  <p>****0026565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0026565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0026565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****0012321365</p>
+                  <p>USTD</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+                <div class="item-table">
+                  <p>****065653565</p>
+                  <p>BTC</p>
+                  <p>38565.55</p>
+                  <p>5/18</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-info">
+        <div class="item active">
+          <div class="icon"><i class="fa-solid fa-house"></i></div>
+          <div class="title">
+            <a href={% url 'app:home' %}>
+            Trang đầu
+            </a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="icon no-active">
+            <img src="{% static 'assets/tabbar_mony_n.png'%}" width="24" alt="" />
+          </div>
+          <div class="icon have-active">
+            <img src="{% static 'assets/tabbar_mony_y2.png'%}" width="24" alt="" />
+          </div>
+          <div class="title">
+            <a href={% url 'app:invest' %}>
+            Đầu tư
+            </a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="icon no-active">
+            <img src="{% static 'assets/tabbar_msg_n.png'%}" width="24" alt="" srcset="" />
+          </div>
+          <div class="icon have-active">
+            <img src="{% static 'assets/tabbar_msg_y.png'%}" width="24" alt="" srcset="" />
+          </div>
+          <div class="title">
+            <a href={% url 'app:service' %}>
+            Dịch vụ khách hàng
+            </a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="icon"><i class="fa-solid fa-user"></i></div>
+          <div class="title">
+            <a href={% url 'app:dashboard' %}>
+            Cá nhân
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let element = document.querySelectorAll(
+      ".motive-market .list-item-table .item-table"
+    );
+    var initialValue = 100;
+
+    // Giảm dần translateY
+    var interval = setInterval(function () {
+      initialValue -= 1; // Giảm giá trị mỗi lần
+      element.forEach((e) => {
+        if (e.style) {
+          e.style.transform = "translateY(" + initialValue + "px)";
+        }
+      });
+
+      if (initialValue == -100) {
+        initialValue = 100; // Gán lại giá trị ban đầu
+        // element.style.transform = "translateY(" + initialValue + "px)";
+      }
+    }, 50); // Thời gian giữa các bước giảm là 1000ms (1 giây)
+  </script>
+</html>

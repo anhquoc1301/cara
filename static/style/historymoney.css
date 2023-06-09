@@ -1,0 +1,14 @@
+.history-tranfer .filter-service {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 1rem;
+}
+.history-tranfer .filter-service select {
+  margin-left: 20px;
+  height: 4rem;
+  font-size: 1.6rem;
+  color: #000;
+}
+
+/*# sourceMappingURL=historymoney.css.map */

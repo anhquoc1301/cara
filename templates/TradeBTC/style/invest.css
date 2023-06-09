@@ -1,0 +1,233 @@
+@charset "UTF-8";
+.invest .header {
+  padding: 2rem;
+  font-size: 2rem;
+}
+.invest .header .green {
+  background-color: rgba(24, 139, 102, 0.2);
+  color: #188b66;
+}
+.invest .header .red {
+  background-color: rgba(250, 130, 130, 0.2);
+  color: #b56161;
+}
+.invest .header .chart {
+  float: right;
+  opacity: 0.8;
+}
+.invest .header .chart:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.invest .content {
+  padding: 2rem;
+  height: 50rem;
+}
+.invest .content .part1 {
+  width: 60%;
+  height: 8rem;
+  float: left;
+  padding: 0.5rem;
+}
+.invest .content .part1 .item {
+  text-align: center;
+  height: 3rem;
+  border: solid 1px #82848a;
+  line-height: 3rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  color: #82848a;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.invest .content .part1 .item.header-part1 {
+  color: #fff;
+  font-weight: 400;
+  display: block;
+  background-color: #188b66;
+  border: solid 1px #188b66;
+}
+.invest .content .part1 .list-item {
+  max-height: 32rem;
+  overflow-y: auto;
+}
+.invest .content .part1 .list-item::-webkit-scrollbar {
+  width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+}
+.invest .content .part1 .available {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  justify-content: space-between;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+.invest .content .part1 .input-number {
+  height: 3rem;
+  padding: 0 2rem;
+  border: solid 1px #82848a;
+  margin-bottom: 1rem;
+}
+.invest .content .part1 .input-number input[type=number] {
+  font-size: 16px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  width: 100%;
+}
+.invest .content .part1 button.btn.btn-success {
+  width: 100%;
+  font-size: 1.6rem;
+  background-color: #188b66;
+  border: solid 1px #188b66;
+}
+.invest .content .part2 {
+  width: 40%;
+  height: 8rem;
+  float: right;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+}
+.invest .content .part2 .item {
+  margin-bottom: 0.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.invest .content .part2 .item .red {
+  color: #b56161;
+}
+.invest .content .part2 .item .green {
+  color: #188b66;
+}
+.invest .content .part2 .item .right {
+  color: #fff;
+  border-radius: 2px;
+}
+.invest .content .part2 .item .right.w-1 {
+  width: 10%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-2 {
+  width: 20%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-3 {
+  width: 30%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-4 {
+  width: 40%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-5 {
+  width: 50%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-6 {
+  width: 60%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-7 {
+  width: 70%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-8 {
+  width: 80%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.w-9 {
+  width: 90%;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(250, 130, 130, 0.2);
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.invest .content .part2 .item .right.green {
+  background-color: rgba(24, 139, 102, 0.2);
+}
+.invest .content .part2 .item .right.red {
+  background-color: rgba(250, 130, 130, 0.2);
+}
+.invest .content .part2 .item.first-item {
+  display: block;
+  color: #188b66;
+}
+.invest .content .part2 .end-part2 .total-today {
+  color: #188b66;
+  font-weight: 700;
+}
+.invest .content .part2 .end-part2 .box {
+  height: 22.5rem;
+  background-color: #112029;
+}
+.invest .content2 {
+  margin-top: 1rem;
+  padding: 2rem;
+  border-top: 5px solid #ccc;
+}
+.invest .content2 .btn {
+  font-size: 1.4rem;
+  color: #fff;
+}
+.invest .content2 .btn.active {
+  color: #fff;
+  background-color: #188b66;
+  border: solid 1px #188b66;
+}
+.invest .content2 div#myTabContent {
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+.invest .content2 div#myTabContent .list-item {
+  max-height: 20rem;
+  overflow-y: auto;
+}
+.invest .content2 div#myTabContent .list-item .item {
+  height: 6rem;
+  border-bottom: 1px solid #82848a;
+}
+.invest .content2 div#myTabContent .list-item::-webkit-scrollbar {
+  width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+}
+
+/*# sourceMappingURL=invest.css.map */

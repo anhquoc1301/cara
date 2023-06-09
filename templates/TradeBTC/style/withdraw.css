@@ -1,0 +1,60 @@
+#login-form.withdraw .container {
+  display: flex;
+  flex-direction: column;
+  height: 70rem;
+  align-items: center;
+  justify-content: start;
+}
+#login-form.withdraw .container h1.title {
+  margin: 2rem 0;
+}
+#login-form.withdraw .container .total-money {
+  width: 100%;
+  padding: 2rem;
+  height: 18rem;
+  width: 100%;
+  padding: 1.5rem;
+  -webkit-border-radius: 0 0 50px 50px;
+  border-radius: 0 0 50px 50px;
+  background-color: #06498c;
+}
+#login-form.withdraw .container .main-withdraw {
+  color: #000;
+  width: 95%;
+  -webkit-border-radius: 25px 25px;
+  border-radius: 25px 25px;
+  border-top: solid 1px #c0c4cc;
+  padding: 1.5rem;
+  margin-top: -8rem;
+  background-color: #fff;
+  margin-bottom: 2rem;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
+  background-image: -webkit-linear-gradient(top, #fff, #eee);
+  background-image: linear-gradient(180deg, #fff, #eee);
+}
+#login-form.withdraw .container .main-withdraw p.info {
+  color: #f90;
+  font-size: 11px;
+}
+#login-form.withdraw .container .main-withdraw .input {
+  padding: 1rem;
+  font-size: 1.4rem;
+}
+#login-form.withdraw .container .main-withdraw .input i {
+  margin-right: 1rem;
+}
+#login-form.withdraw .container .main-withdraw .input input {
+  width: 95%;
+  padding-left: 10px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #000;
+}
+#login-form.withdraw .container button.btn.btn-primary {
+  width: 20%;
+  height: 4rem;
+  font-size: 2rem;
+}
+
+/*# sourceMappingURL=withdraw.css.map */

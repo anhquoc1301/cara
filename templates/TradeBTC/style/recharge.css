@@ -1,0 +1,26 @@
+.recharge .method {
+  margin-top: 2rem;
+  background-image: linear-gradient(90deg, #60a3ff, #007aff);
+  height: 5.5rem;
+  padding: 2rem;
+  font-size: 1.6rem;
+  line-height: 1.5rem;
+  border-radius: 5px;
+}
+.recharge .method .form-check-label {
+  margin-bottom: 0;
+  margin-left: 1rem;
+}
+.recharge .main-withdraw.list-wallet {
+  min-height: 40rem;
+}
+
+#login-form.withdraw .container {
+  display: flex;
+  flex-direction: column;
+  height: 80rem;
+  align-items: center;
+  justify-content: start;
+}
+
+/*# sourceMappingURL=recharge.css.map */

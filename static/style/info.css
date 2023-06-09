@@ -1,0 +1,160 @@
+div#info {
+  width: 100vw;
+  height: 100vh;
+  background-color: #111423;
+  background-color: #111423;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+div#info .logo {
+  text-align: center;
+  padding: 2rem;
+}
+div#info .content-info {
+  padding: 2rem 5rem;
+}
+div#info .content-info .user {
+  display: flex;
+  align-items: center;
+}
+div#info .content-info .user .avatar {
+  margin-right: 2rem;
+}
+div#info .content-info .user .avatar img {
+  border-radius: 50%;
+}
+div#info .content-info .user .code {
+  font-size: 18px;
+  font-weight: 600;
+}
+div#info .content-info .user .id {
+  font-size: 16px;
+}
+div#info .content-info .user .id .fa-copy {
+  color: #0072d5;
+  cursor: pointer;
+}
+div#info .content-info .user .id .fa-copy:hover {
+  color: #8ccfe3;
+}
+div#info .content-info .balance {
+  height: 8rem;
+  margin-top: 1.5rem;
+  background-color: #2b2e43;
+  padding: 2rem 1.5rem;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+div#info .content-info .balance .number {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 1.6rem;
+  text-align: center;
+}
+div#info .content-info .balance .number .number {
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+div#info .content-info .balance .number p {
+  margin: 0;
+}
+div#info .content-info .list-action {
+  background-color: #2b2e43;
+  border-radius: 25px;
+  padding: 1rem;
+}
+div#info .content-info .list-action .money {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+div#info .content-info .warning {
+  font-size: 1.4rem;
+  color: #f90;
+
+}
+div#info .content-info .list-action .btn {
+  width: 48%;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 2.5rem;
+  color: #fff;
+  background-color: #2d50fe;
+  font-size: 20px;
+  cursor: pointer;
+}
+div#info .content-info .list-action .btn:hover {
+  background-color: #1890ff;
+}
+div#info .content-info .list-action .actions {
+  padding: 20px;
+}
+div#info .content-info .list-action .actions .item {
+  height: 5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-bottom: 1px solid #000;
+  margin-top: 1rem;
+  line-height: 4rem;
+}
+div#info .content-info .list-action .actions .item .fa-solid {
+  margin-right: 1rem;
+}
+div#info .footer-info {
+  position: fixed;
+  height: 50px;
+  background: rgb(27, 30, 47);
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5rem;
+}
+div#info .footer-info .item {
+  text-align: center;
+}
+div#info .footer-info .item .icon {
+  font-size: 2rem;
+}
+div#info .footer-info .item .title {
+  font-size: 1.4rem;
+}
+div#info .footer-info .item.active {
+  color: #1890ff;
+}
+div#info .footer-info .have-active {
+  display: none;
+}
+div#info .footer-info .no-active {
+  display: block;
+}
+div#info .footer-info .active .no-active {
+  display: none;
+}
+div#info .footer-info .active .have-active {
+  display: block;
+}
+div#info .mail {
+  float: right;
+  font-size: 32px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+div#info .mail:hover {
+  opacity: 1;
+}
+
+div#info a:hover {
+  text-emphasis: none;
+  cursor: pointer;
+}
+div#info a {
+ color: #fff;
+}
+
+/*# sourceMappingURL=info.css.map */
