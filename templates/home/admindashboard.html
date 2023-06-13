@@ -1,0 +1,33 @@
+{% extends 'index/index.html' %}
+{% block content %}
+<div id="content" class="flex ">
+                  <div>
+                      <div class="page-hero page-container " id="page-hero">
+                          <div class="padding d-flex">
+                              <div class="page-title">
+                                  <h2 class="text-md text-highlight">Chartist</h2>
+                                  <small class="text-muted">Simple responsive charts</small>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="page-content page-container" id="page-content">
+                          <div class="padding">
+                              <div class="row" data-plugin="chartist">
+                                 
+                                  <div class="col-md-6">
+                                      <div class="card">
+                                          <div class="card-header">
+                                              Bar chart
+                                          </div>
+                                          <div class="card-body">
+                                              <div id="chartist-bar" class="pos-rlt" style="height: 240px">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+</div>
+{% endblock %}

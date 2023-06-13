@@ -20,16 +20,16 @@ def main(request):
     # users=User.objects.all().order_by('-create_at')[1:6]
     # a=User.objects.earliest('create_at')
     us=User.objects.get(username='anh1301')
-    print(us)
-    if us.is_authenticated:
-        print(True)
-    else:
-        print(False)
-    # a.c
+    
+    today = datetime.date.today()
+    print(today)
+    first = today.replace(day=1)
+    last_month = first - datetime.timedelta(days=200)
+    print(last_month)
     if request.method == 'POST':
         
         print(request.POST.get("username"))
-    return render(request, 'index/addstaff.html')
+    return render(request, 'home/admindashboard.html')
 
 # def main(request):
 #     qs= Statistic.objects.all()
@@ -350,6 +350,103 @@ def list_staff(request):
 
 @login_required
 @admin_only
+def detail_staff(request, pk):
+    staff=User.objects.get(id=pk)
+    users=User.objects.filter(referrer=staff.code)
+    outputs_month = []
+    inputs_month = []
+    today = datetime.datetime.today()
+    for user in users:
+        output_money_month = OutputMoney.objects.filter(user=user).filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
+        input_money_month = InputMoney.objects.filter(user=user).filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
+        outputs_month.append(output_money_month)
+        inputs_month.append(input_money_month)
+    input_month_value = 0
+    output_month_value = 0
+    for i in outputs_month:
+        output_month_value+=i.value
+    for i in inputs_month:
+        input_month_value+=i.value_control
+    revenue = input_month_value-output_month_value
+    if revenue>9999:
+        basic_salary=1100
+    else:
+        basic_salary=855
+    if 0<revenue<10000:
+        total_salary=basic_salary+revenue*0.05
+    elif 10000 <= revenue < 40000:
+        total_salary=basic_salary+revenue*0.07
+    elif 40000 <= revenue < 70000:
+        total_salary=basic_salary+revenue*0.09
+    elif 70000<=revenue<100000:
+        total_salary=basic_salary+revenue*0.11
+    elif 100000<=revenue<130000:
+        total_salary=basic_salary+revenue*0.13
+    elif 130000<=revenue:
+        total_salary=basic_salary+revenue*0.15
+    else:
+        total_salary=basic_salary
+    context={
+        'output_month_value': output_month_value,
+        'input_month_value': input_month_value,
+        'basic_salary': basic_salary,
+        'total_salary': total_salary,
+        'total_user': users.count()
+    }
+    
+    return render(request, 'home/detailstaff.html', context)
+
+@login_required
+@admin_only
+def detail_staff_last_month(request, pk):
+    staff=User.objects.get(id=pk)
+    users=User.objects.filter(referrer=staff.code)
+    outputs_month = []
+    inputs_month = []
+    today = datetime.date.today()
+    first = today.replace(day=1)
+    last_month = first - datetime.timedelta(days=40)
+    for user in users:
+        output_money_month = OutputMoney.objects.filter(user=user).filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
+        input_money_month = InputMoney.objects.filter(user=user).filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
+        outputs_month.append(output_money_month)
+        inputs_month.append(input_money_month)
+    input_month_value = 0
+    output_month_value = 0
+    for i in outputs_month:
+        output_month_value+=i.value
+    for i in inputs_month:
+        input_month_value+=i.value_control
+    revenue = input_month_value-output_month_value
+    if revenue>9999:
+        basic_salary=1100
+    else:
+        basic_salary=855
+    if 0<revenue<10000:
+        total_salary=basic_salary+revenue*0.05
+    elif 10000 <= revenue < 40000:
+        total_salary=basic_salary+revenue*0.07
+    elif 40000 <= revenue < 70000:
+        total_salary=basic_salary+revenue*0.09
+    elif 70000<=revenue<100000:
+        total_salary=basic_salary+revenue*0.11
+    elif 100000<=revenue<130000:
+        total_salary=basic_salary+revenue*0.13
+    elif 130000<=revenue:
+        total_salary=basic_salary+revenue*0.15
+    else:
+        total_salary=basic_salary
+    context={
+        'output_month_value': output_month_value,
+        'input_month_value': input_month_value,
+        'basic_salary': basic_salary,
+        'total_salary': total_salary,
+    }
+    
+    return render(request, 'home/detailstafflastmonth.html', context)
+
+@login_required
+@admin_only
 def add_staff(request):
     if request.method=="POST":
         username=request.POST.get('username')
@@ -396,24 +493,43 @@ def set_user_referrer(request, pk):
 @login_required
 @admin_only
 def admin_dashboard(request):
-    staff = request.user
-    users=User.objects.filter(referrer=staff.code)
-    outputs = []
-    inputs = []
-    outputs_month = []
-    inputs_month = []
-    today = datetime.datetime.today()
-    for user in users:
-        output_money = OutputMoney.objects.filter(user=user)
-        input_money = InputMoney.objects.filter(user=user)
-        outputs.append(output_money)
-        inputs.append(input_money)
-        output_money_month = OutputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month)
-        input_money_month = InputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month)
-        outputs_month.append(output_money_month)
-        inputs_month.append(input_money_month)
-    
-    return redirect('app:list_accept_output_money')
+    today = datetime.date.today()
+    first = today.replace(day=1)
+    last_month = first - datetime.timedelta(days=40)
+    last_last_month = first - datetime.timedelta(days=70)
+    output_money_month = OutputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
+    input_money_month = InputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
+    output_money_last_month = OutputMoney.objects.filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
+    input_money_last_month = InputMoney.objects.filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
+    output_money_last_last_month = OutputMoney.objects.filter(timestamp__year=last_last_month.year).filter(timestamp__month=last_last_month.month).filter(status='Success')
+    input_money_last_last_month = InputMoney.objects.filter(timestamp__year=last_last_month.year).filter(timestamp__month=last_last_month.month).filter(status='Success')
+    output_month_value = 0
+    input_month_value = 0
+    output_last_month_value = 0
+    input_last_month_value = 0
+    output_last_last_month_value = 0
+    input_last_last_month_value = 0
+    for i in output_money_month:
+        output_month_value+=i.value
+    for i in input_money_month:
+        input_month_value+=i.value_control
+    for i in output_money_last_month:
+        output_last_month_value+=i.value
+    for i in input_money_last_month:
+        input_last_month_value+=i.value_control
+    for i in output_money_last_last_month:
+        output_last_last_month_value+=i.value
+    for i in input_money_last_last_month:
+        input_last_last_month_value+=i.value_control
+    context={
+        'output_month_value': output_month_value,
+        'input_month_value': input_month_value,
+        'output_last_month_value': output_last_month_value,
+        'input_last_month_value': input_last_month_value,
+        'output_last_last_month_value': output_last_last_month_value,
+        'input_last_last_month_value': input_last_last_month_value
+        }
+    return render(request, 'home/admindashboard.html', context)
 
 
 #Just Staff
@@ -499,3 +615,26 @@ def invest(request):
         
     }
     return render(request, 'TradeBTC/invest.html', context )
+
+
+
+class login(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return render(request, 'TradeBTC/login.html')
+        else:
+            return redirect('app:home')
+    def post(self,request):
+        username = request.POST.get('username')
+        password= request.POST.get('password')
+        myUser = authenticate(request, username=username, password=password)
+        if myUser is None:
+            messages.error(request, 'Sai tài khoản hoặc mật khẩu!')
+            return redirect('app:login')
+        auth.login(request, myUser)
+        if myUser.type==0:
+            return redirect('app:home')
+        elif myUser.type==1:
+            return redirect('app:list_accept_input_money')
+        elif myUser.type==2:
+            return redirect('app:home')
