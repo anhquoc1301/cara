@@ -33,6 +33,7 @@ AUTH_USER_MODEL= 'ModuleApp.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,9 +43,16 @@ INSTALLED_APPS = [
     # 'MultiLevelApp',
     'ModuleApp',
     # 'chat',
-    'channels',
     'django_crontab',
 ]
+
+ASGI_APPLICATION = 'TradeBTC.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,8 +82,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'TradeBTC.wsgi.application'
-ASGI_APPLICATION = 'TradeBTC.asgi.application'
+WSGI_APPLICATION = 'TradeBTC.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -84,11 +91,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND':'channels.layers.InMemoryChannelLayer'
     }
 }
 

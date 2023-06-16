@@ -13,13 +13,22 @@ class User(AbstractUser):
     code = models.IntegerField(null=True)
     wallet = models.IntegerField(default=0)
     wallet_password = models.CharField(max_length=6, null=True, default=None)
-    type_choice = ((0, 'Normal'), (1, 'Admin'), (2, 'Staff'))
+    type_choice = ((0, 'Normal'), (1, 'Admin'), (2, 'Staff'), (3, 'Guest'))
     type = models.IntegerField(choices=type_choice, default=0)
     referrer = models.IntegerField(null=True)
 
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
+class GuestCheck(models.Model):
+
+    check_login = models.BooleanField(default=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='guest_check'
+    )
+
+    def __str__(self):
+        return str(self.user)
 
 class BankCardInfo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -306,7 +315,7 @@ class TradeUSDT(models.Model):
         (3, 'Superior'),
         (4, 'Super Vip')
     )
-    room_type_trade = models.IntegerField(choices=type_choice, default=1)
+    room_type_trade = models.IntegerField(choices=room_type, default=1)
     result_choice = (
         (1, 'Undefined'),
         (2, 'Win'),

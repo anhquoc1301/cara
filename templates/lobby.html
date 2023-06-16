@@ -8,7 +8,6 @@
 
 </head>
 <body>
-    <a href="{% url 'check' 20 %}"></i>Từ chối</a>
     <h1>Lets chat!</h1>
 
     <form action="" method="POST" id="form">
@@ -19,14 +18,14 @@
     <div id="messages"></div>
 
     <script type="text/javascript">
-        let url = `ws://${window.location.host}/ws/socket-server/`
+        let url = `ws://${window.location.host}/ws/invest/`
 
         const chatSocket = new WebSocket(url)
         console.log(chatSocket)
         {% comment %} chatSocket.send(JSON.stringify({
             'message':'helo from client'
         })) {% endcomment %}
-        chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'Welcome to the chat. Type below to begin a conversation...' }))
+        chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
 
         chatSocket.onmessage = function(e){
             let data = JSON.parse(e.data)

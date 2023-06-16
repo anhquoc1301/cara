@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Statistic, DataItem, User, InputMoney, OutputMoney, TradeUSDT, PhaseUSDT, SetPhaseUSDT, BankCardInfo, DigitalWalletInfo
+from .models import Statistic, DataItem, User, InputMoney, OutputMoney, GuestCheck
+from .models import TradeUSDT, PhaseUSDT, SetPhaseUSDT, BankCardInfo, DigitalWalletInfo
 from faker import Faker
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -13,6 +14,7 @@ import random
 import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.http import HttpResponse
 # Create your views here.
 
 def main(request):
@@ -581,9 +583,9 @@ def invest(request):
             channel_layer = get_channel_layer()
             trade_all_value_new=trade_all_value+value
             message = {
-                "wallet": user.wallet,
-                "trade": trade,
-                "trade_all_value": trade_all_value_new,
+                "wallet": str(user.wallet),
+                "trade": str(trade),
+                "trade_all_value": str(trade_all_value_new),
             }
             async_to_sync(channel_layer.group_send)(
                 user.username,
@@ -594,8 +596,8 @@ def invest(request):
             )
 
             message = {
-                "trade_value_client": trade.trade_value,
-                "trade_type_client": trade.trade_type
+                "trade_value_client": str(trade.trade_value),
+                "trade_type_client": str(trade.trade_type)
             }
             async_to_sync(channel_layer.group_send)(
                 user.username,
@@ -614,27 +616,127 @@ def invest(request):
         'trade_all_value':trade_all_value
         
     }
-    return render(request, 'TradeBTC/invest.html', context )
+    return render(request, 'lobby.html', context )
 
+def cron(request):
+    #get channel websocket
+    channel_layer = get_channel_layer()
 
-
-class login(View):
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return render(request, 'TradeBTC/login.html')
+    # result last phase
+    lastPhase = PhaseUSDT.objects.latest('create_at')
+    trades = TradeUSDT.objects.filter(phase=lastPhase)
+    resultPhase = lastPhase.a+lastPhase.c+lastPhase.c
+    for trade in trades:
+        if resultPhase >= 13 and trade.type_choice == 1:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*1.96
+        elif resultPhase <= 13 and trade.type_choice == 2:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*1.96
+        elif resultPhase % 2 == 1 and trade.type_choice == 3:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*1.96
+        elif resultPhase % 2 == 0 and trade.type_choice == 4:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*1.96
+        elif resultPhase >= 13 and resultPhase % 2 == 1 and trade.type_choice == 5:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*3.96
+        elif resultPhase <= 13 and resultPhase % 2 == 1 and trade.type_choice == 6:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*3.96
+        elif resultPhase >= 13 and resultPhase % 2 == 0 and trade.type_choice == 7:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*3.96
+        elif resultPhase <= 13 and resultPhase % 2 == 0 and trade.type_choice == 8:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*3.96
+        elif resultPhase == 27 and trade.type_choice == 9:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*15
+        elif resultPhase == 0 and trade.type_choice == 10:
+            trade.result = 1
+            trade.trade_value_win = trade.trade_value*15
         else:
-            return redirect('app:home')
-    def post(self,request):
-        username = request.POST.get('username')
-        password= request.POST.get('password')
-        myUser = authenticate(request, username=username, password=password)
-        if myUser is None:
-            messages.error(request, 'Sai tài khoản hoặc mật khẩu!')
-            return redirect('app:login')
-        auth.login(request, myUser)
-        if myUser.type==0:
-            return redirect('app:home')
-        elif myUser.type==1:
-            return redirect('app:list_accept_input_money')
-        elif myUser.type==2:
-            return redirect('app:home')
+            trade.result=2
+        trade.save()
+        user=User.objects.get(id=trade.user.id)
+        if trade.result==1:
+            user.wallet+=trade.trade_value_win
+            user.save()
+            message = {
+                "result": "win",
+                "wallet": str(user.wallet),
+                "trade_id": str(trade.id),
+                "trade_value": str(trade.trade_value),
+                "trade_value_win": str(trade.trade_value_win),
+                "a": str(lastPhase.a),
+                "b": str(lastPhase.b),
+                "c": str(lastPhase.c),
+            }
+            async_to_sync(channel_layer.group_send)(
+                user.username,
+                {
+                    "type": "chat_message",
+                    "message": message
+                },
+            )
+
+        elif trade.result==2:
+            message = {
+                "result": "lose",
+                "trade_id": str(trade.id),
+                "trade_value": str(trade.trade_value),
+                "a": str(lastPhase.a),
+                "b": str(lastPhase.b),
+                "c": str(lastPhase.c),
+            }
+            async_to_sync(channel_layer.group_send)(
+                user.username,
+                {
+                    "type": "chat_message",
+                    "message": message
+                },
+            )
+
+    # create phase
+    new_phase = PhaseUSDT.objects.create(code=random.randint(0000000, 9999999))
+    set_phase = SetPhaseUSDT.objects.first()
+    if set_phase.a == -1 or set_phase.b == -1 or set_phase.c == -1:
+        had_set = False
+    else:
+        had_set = True
+    new_phase.input_phase(a=set_phase.a, b=set_phase.b,
+                          c=set_phase.c, had_set=had_set)
+    set_phase.refresh_phase_set()
+
+    message = {
+        "time": str(new_phase.create_at),
+        "code": str(new_phase.code),
+        "a": str(new_phase.a),
+        "b": str(new_phase.b),
+        "c": str(new_phase.c)
+    }
+    async_to_sync(channel_layer.group_send)(
+        'normal',
+        {
+            "type": "chat_message",
+            "message": message
+        },
+    )
+    return HttpResponse('chiehfhj,sdfe')
+
+def guest_login(request):
+    guests=User.objects.filter(type=3)
+    for i in guests:
+        check=GuestCheck.objects.get(user=i)
+        if check.check_login==True:
+            guest=i
+            break
+    myGuest = authenticate(request, username=guest.username, password='123456')
+    auth.login(request, myGuest)
+    check=GuestCheck.objects.get(user=guest)
+    check.check_login=False
+    check.save()
+    return redirect('app:dashboard')
+    
