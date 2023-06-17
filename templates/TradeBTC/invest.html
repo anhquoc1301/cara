@@ -53,69 +53,75 @@
       </div>
       <div class="content">
         <div class="first-box">
-          <div id="part1" class="part1">
-            <div class="item header-part1">Giao dịch thông thường</div>
-            <div class="list-item">
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
-              <div class="item">
-                <div class="name">Olong</div>
-                <div class="price">1.96</div>
-              </div>
+            <div id="part1" class="part1">
+              <form method="post" id="task-form">
+                {% csrf_token %}
+                <input name="type" class="input-short-long" value="" hidden
+                 id="type" />
+                <div class="item header-part1">Giao dịch thông thường</div>
+                  <div class="list-item">
+                    <div class="item" value="0">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item" value="1">
+                      <div class="name">short</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                    <div class="item">
+                      <div class="name">long</div>
+                      <div class="price">1.96</div>
+                    </div>
+                  </div>
+                  <div class="transaction">
+                    <div class="available">
+                      <p>Có sẵn</p>
+                      <p>{{user.wallet}} USDT</p>
+                    </div>
+                      <div class="input-number">
+                        <input class="input-search" name="value" id="value" type="number" placeholder="Nhập số tiền giao dịch" />
+                      </div>
+                      <button type="submit" class="btn btn-success">Mua ngay</button>
+                  </div>
+                </div>
+              </form>
             </div>
-            <div class="transaction">
-              <div class="available">
-                <p>Có sẵn</p>
-                <p>{{user.wallet}} USDT</p>
-              </div>
-              <div class="input-number">
-                <input type="number" placeholder="Nhập số tiền giao dịch" />
-              </div>
-              <button type="button" class="btn btn-success">Mua ngay</button>
-            </div>
-          </div>
           <div id="part2" class="part2">
             <div class="item header-part2">
               <span>Kết quả</span>
-              <span style="float: right"> Phase </span>
+              <span id="phase" style="float: right" value="{{phase.create_at}}"> {{phase.create_at}}Phase </span>
             </div>
             <div class="list-item">
               <div class="item first-item">
@@ -309,9 +315,13 @@
     })
   </script>
   <script type="text/javascript">
-    let url = `ws://${window.location.host}/ws/invest/`
+    let url = `ws://${window.location.host}/ws/socket-server/`
 
     const chatSocket = new WebSocket(url)
+    console.log(chatSocket)
+    let phaseTime = document.querySelector('#phase').getAttribute('value');
+    console.log(phaseTime)
+
     {% comment %} chatSocket.send(JSON.stringify({
         'message':'helo from client'
     })) {% endcomment %}
@@ -321,6 +331,7 @@
         let data = JSON.parse(e.data)
         console.log('Data:', data)
 
+ 
         if(data.type === 'chat'){
             let messages = document.getElementById('messages')
 
@@ -329,17 +340,54 @@
                                 </div>`)
         }
     }
+        {% comment %} let form = document.getElementById('form')
+        form.addEventListener('submit', (e)=> {
+            e.preventDefault()
+            let message = e.target.message.value 
+            chatSocket.send(JSON.stringify({
+                'message':message
+            }))
+            form.reset()
+        }) {% endcomment %}
 
-    let form = document.getElementById('form')
-    form.addEventListener('submit', (e)=> {
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      $(document).on('submit', '#task-form', function (e) {
         e.preventDefault()
-        let message = e.target.message.value 
-        chatSocket.send(JSON.stringify({
-            'message':message
-        }))
-        form.reset()
-    })
-
-  </script>
+        $.ajax({
+          type: 'POST',
+          url: '{% url "app:invest" %}',
+          data: {
+            value: $('#value').val(),
+            type: $('#type').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+          }
+        })
+        const searchInput = document.querySelector('.input-search')
+        searchInput.value = ''
+      })
+    </script>
+    <script>
+      const list = document.querySelectorAll(".invest .content .part1 .item");
+      let inputValue = document.querySelector(".input-short-long");
+      console.log(inputValue)
+      let value = null;
+      list.forEach(function(element) {
+        element.addEventListener('click', function() {
+          // Xóa lớp "active" khỏi tất cả các phần tử
+          list.forEach(function(el) {
+            el.classList.remove('active-selection');
+          });
+      
+          // Thêm lớp "active" vào phần tử được nhấp chuột
+          this.classList.add('active-selection');
+          value = element.getAttribute('value');
+          inputValue.setAttribute('value', value);
+        });
+      });
+    </script>
 
 </html>

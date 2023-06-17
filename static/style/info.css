@@ -6,6 +6,7 @@ div#info {
   width: 100vw;
   height: 100vh;
   position: relative;
+  overflow-y: hidden;
 }
 div#info .logo {
   text-align: center;
@@ -72,11 +73,6 @@ div#info .content-info .list-action .money {
   align-items: center;
   justify-content: space-evenly;
 }
-div#info .content-info .warning {
-  font-size: 1.4rem;
-  color: #f90;
-
-}
 div#info .content-info .list-action .btn {
   width: 48%;
   text-align: center;
@@ -85,7 +81,6 @@ div#info .content-info .list-action .btn {
   color: #fff;
   background-color: #2d50fe;
   font-size: 20px;
-  cursor: pointer;
 }
 div#info .content-info .list-action .btn:hover {
   background-color: #1890ff;
@@ -141,20 +136,12 @@ div#info .footer-info .active .have-active {
 }
 div#info .mail {
   float: right;
-  font-size: 32px;
+  font-size: 3.2rem;
   cursor: pointer;
   opacity: 0.8;
 }
 div#info .mail:hover {
   opacity: 1;
-}
-
-div#info a:hover {
-  text-emphasis: none;
-  cursor: pointer;
-}
-div#info a {
- color: #fff;
 }
 
 /*# sourceMappingURL=info.css.map */

@@ -437,19 +437,19 @@
     let element = document.querySelectorAll(
       ".motive-market .list-item-table .item-table"
     );
-    var initialValue = 100;
+    var initialValue = 0;
 
     // Giảm dần translateY
     var interval = setInterval(function () {
-      initialValue -= 1; // Giảm giá trị mỗi lần
+      initialValue -= 0.1; // Giảm giá trị mỗi lần
       element.forEach((e) => {
         if (e.style) {
-          e.style.transform = "translateY(" + initialValue + "px)";
+          e.style.transform = "translateY(" + initialValue + "rem)";
         }
       });
 
-      if (initialValue == -100) {
-        initialValue = 100; // Gán lại giá trị ban đầu
+      if (initialValue <= -19.7) {
+        initialValue = 0; // Gán lại giá trị ban đầu
         // element.style.transform = "translateY(" + initialValue + "px)";
       }
     }, 50); // Thời gian giữa các bước giảm là 1000ms (1 giây)

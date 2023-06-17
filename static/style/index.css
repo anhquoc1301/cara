@@ -96,7 +96,6 @@
   align-items: center;
   justify-content: space-between;
   font-size: 1.2rem;
-  transition: transform 0.5s ease-in-out;
 }
 .index .main-container .third-line #profile .item-table p:nth-child(1) {
   color: #1135dc;
@@ -158,6 +157,61 @@
   height: 15rem;
   object-fit: fill;
   border-radius: 5px;
+}
+
+@media only screen and (max-width: 1366px) {
+  .index .main-container .first-line .item {
+    width: 49rem;
+  }
+  .index .main-container .third-line .tab-content .list-item .item {
+    height: 5rem;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .index .main-container .first-line .item {
+    width: 36rem;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .index .main-container .first-line {
+    display: block;
+  }
+  .index .main-container .first-line .item {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+  }
+  .index .main-container .second-line .item {
+    width: 48%;
+  }
+  .index .main-container .third-line #profile .header-table p {
+    width: 25%;
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .index .main-container .first-line .item {
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .index .main-container .second-line .item {
+    width: 100%;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+  }
+  .index .main-container .second-line .item-2 {
+    float: right;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.7rem;
+    margin-bottom: 3rem;
+  }
+  .index .main-container .second-line .item-2 {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=index.css.map */

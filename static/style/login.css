@@ -103,4 +103,13 @@
   color: #fbaf30;
 }
 
+@media only screen and (max-width: 1024px) {
+  #login-form .container {
+    justify-content: space-evenly;
+  }
+  #login-form .container .logo-login {
+    margin-top: 2rem;
+  }
+}
+
 /*# sourceMappingURL=login.css.map */

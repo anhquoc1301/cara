@@ -557,11 +557,11 @@ def staff_dashboard(request):
     
     return redirect('app:list_accept_output_money')
 
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 @login_required
 def invest(request):
+    channel_layer = get_channel_layer()
+
     user=User.objects.get(id=request.user.id)
     phase = PhaseUSDT.objects.latest('create_at')
     today = datetime.datetime.today()
@@ -573,20 +573,21 @@ def invest(request):
     trade_all_value=0
     for trade in trades:
         trade_all_value+=trade.trade_value
-    if is_ajax(request) and request.method == "GET":
-        value = int(request.GET.get("value", None))
-        type = int(request.GET.get("type", None))
+    
+    if request.method == 'POST':
+        value=int(request.POST.get('value', None))
+        type=int(request.POST.get('type', None ))
         if user.wallet>=value:
-            trade = TradeUSDT.objects.create(trade_value=value, trade_type=type)
+            trade = TradeUSDT.objects.create(trade_value=value, trade_type=type, phase=phase, user=user)
             user.wallet-=value
             user.save()
-            channel_layer = get_channel_layer()
             trade_all_value_new=trade_all_value+value
             message = {
                 "wallet": str(user.wallet),
                 "trade": str(trade),
                 "trade_all_value": str(trade_all_value_new),
             }
+            print(user.username)
             async_to_sync(channel_layer.group_send)(
                 user.username,
                 {
@@ -594,13 +595,12 @@ def invest(request):
                     "message": message
                 },
             )
-
             message = {
                 "trade_value_client": str(trade.trade_value),
                 "trade_type_client": str(trade.trade_type)
             }
             async_to_sync(channel_layer.group_send)(
-                user.username,
+                "normal",
                 {
                     "type": "chat_message",
                     "message": message
@@ -616,7 +616,7 @@ def invest(request):
         'trade_all_value':trade_all_value
         
     }
-    return render(request, 'lobby.html', context )
+    return render(request, 'TradeBTC/invest.html', context )
 
 def cron(request):
     #get channel websocket

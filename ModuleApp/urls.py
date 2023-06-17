@@ -35,5 +35,4 @@ urlpatterns = [
     path('invest/', invest, name='invest'),
     path('cron/', cron, name='cron'),
     path('guest_login/', guest_login, name='guest_login'),
-
 ]

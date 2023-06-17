@@ -44,6 +44,10 @@
   font-weight: 700;
   text-transform: uppercase;
 }
+.invest .content .part1 .item.active-selection {
+  border: solid 1px #188b66 !important;
+  color:#188b66;
+}
 .invest .content .part1 .item.header-part1 {
   color: #fff;
   font-weight: 400;
@@ -73,7 +77,7 @@
   margin-bottom: 1rem;
 }
 .invest .content .part1 .input-number input[type=number] {
-  font-size: 16px;
+  font-size: 1.6rem;
   background-color: transparent;
   outline: none;
   border: none;
@@ -228,6 +232,83 @@
 }
 .invest .content2 div#myTabContent .list-item::-webkit-scrollbar {
   width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+}
+
+.list-option-select {
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  width: 100%;
+  height: 45rem;
+  padding: 3rem 2rem;
+  display: flex;
+}
+.list-option-select div#v-pills-tab {
+  border-right: 1px solid #ccc;
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+.list-option-select div#v-pills-tab a {
+  width: 12rem;
+}
+.list-option-select div#v-pills-tabContent {
+  padding: 2rem;
+  width: 100%;
+}
+.list-option-select div#v-pills-tabContent .list-select {
+  width: 100%;
+}
+.list-option-select div#v-pills-tabContent .list-select .option {
+  height: 8rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-size: 100% 100%;
+  color: #fff;
+}
+.list-option-select div#v-pills-tabContent .list-select .option:first-child {
+  background-image: url(https://ba.ruibcs.com/kaptcha/20220719b5a072e5-53e7-47ca-a806-547e45026bc5.png);
+}
+.list-option-select div#v-pills-tabContent .list-select .option:nth-child(2) {
+  background-image: url(https://ba.ruibcs.com/kaptcha/20210502e9600314-fbce-456a-9a11-797620826df9.png);
+}
+.list-option-select div#v-pills-tabContent .list-select .option:nth-child(3) {
+  background-image: url(https://ba.ruibcs.com/kaptcha/2021050206fe1257-e378-4fc1-b01a-4a2387f316fc.png);
+}
+.list-option-select div#v-pills-tabContent .list-select .option:nth-child(4) {
+  background-image: url(https://ba.ruibcs.com/kaptcha/20221206dbe143be-3116-4a90-b417-77b905ac5012.png);
+}
+.list-option-select div.tab-pane.fade {
+  color: #000;
+}
+
+@media only screen and (max-width: 1024px) {
+  .invest .content .part1 .list-item {
+    max-height: 17rem;
+    overflow-y: auto;
+  }
+  .invest .content {
+    padding: 2rem;
+    height: 35rem;
+  }
+  .invest .content .part2 .end-part2 .box {
+    height: 7.5rem;
+    background-color: #112029;
+  }
+  .invest .content {
+    padding: 1rem;
+  }
+  .invest .header {
+    padding: 1rem;
+  }
+  .invest .content2 {
+    margin-top: 0rem;
+    padding: 2rem;
+    border-top: 5px solid #ccc;
+  }
 }
 
 /*# sourceMappingURL=invest.css.map */

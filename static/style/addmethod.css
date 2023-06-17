@@ -20,4 +20,15 @@
   margin-bottom: 2rem;
 }
 
+@media only screen and (max-width: 1024px) {
+  #login-form .container .logo-login {
+    margin-top: 4rem;
+  }
+}
+@media only screen and (max-width: 400px) {
+  #login-form.withdraw .container button.btn.btn-primary {
+    width: 30%;
+  }
+}
+
 /*# sourceMappingURL=addmethod.css.map */

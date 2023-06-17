@@ -57,4 +57,24 @@
   font-size: 2rem;
 }
 
+@media only screen and (max-width: 1024px) {
+  #login-form .container .logo-login {
+    margin-top: 1rem;
+  }
+  #login-form.withdraw .container .total-money {
+    height: 13rem;
+    padding: 0 1rem;
+  }
+}
+@media only screen and (max-width: 900px) {
+  #login-form.withdraw .container button.btn.btn-primary {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 400px) {
+  #login-form.withdraw .container button.btn.btn-primary {
+    width: 70%;
+  }
+}
+
 /*# sourceMappingURL=wallet.css.map */
