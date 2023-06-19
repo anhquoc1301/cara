@@ -1,0 +1,86 @@
+@charset "UTF-8";
+@media only screen and (max-width: 1024px) {
+  html {
+    font-size: 7px;
+    color: #fff;
+  }
+  div#info .content-info .list-action .btn {
+    font-size: 2rem;
+  }
+  div#info .logo {
+    text-align: center;
+    padding: 1rem;
+  }
+  div#info .content-info .list-action .actions {
+    padding: 2rem;
+  }
+  div#info .content-info .list-action .actions .item {
+    height: 4rem;
+  }
+}
+.invest .content .part2 .items-box {
+  padding: 1rem;
+  max-height: 21rem;
+  overflow: auto;
+}
+.invest .content .part2 .items-box::-webkit-scrollbar {
+  width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+}
+.invest .content .part2 .items-box .item {
+  font-size: 1.8rem;
+  color: #188b66;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
+}
+
+@media only screen and (max-width: 1024px) {
+  .invest .content {
+    padding: 2rem;
+    height: 38rem;
+  }
+  .invest .content .part1 .list-item {
+    max-height: 20rem;
+    overflow-y: auto;
+  }
+  .invest .content .part2 .end-part2 .box {
+    height: 10.5rem;
+    background-color: #112029;
+  }
+  .invest .content .part2 .items-box {
+    padding: 0.5rem;
+    max-height: 9rem;
+    overflow: auto;
+  }
+  .invest .content .part2 .items-box::-webkit-scrollbar {
+    width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+  }
+  .invest .content .part2 .items-box .item {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    height: 2rem;
+    color: #188b66;
+    text-transform: uppercase;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .invest .content .part2 .items-box {
+    padding: 0.5rem;
+    max-height: 6rem;
+    overflow: auto;
+  }
+  .invest .content .part2 .items-box::-webkit-scrollbar {
+    width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+  }
+  .invest .content .part2 .items-box .item {
+    font-size: 1rem;
+    height: 1.5rem;
+    color: #188b66;
+    text-transform: uppercase;
+  }
+  .invest .content .part2 .end-part2 .box {
+    height: 8.5rem;
+    background-color: #112029;
+  }
+}
+
+/*# sourceMappingURL=addcss.css.map */

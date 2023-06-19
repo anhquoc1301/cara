@@ -1,0 +1,41 @@
+{% extends 'index/index.html' %}
+{% block content %}
+<div class="d-flex flex" id="content-body">
+    <div class="d-flex flex-column flex card">
+        <div class="padding">
+            <div class="row ">
+                <table id="table" class="table" data-mobile-responsive="true"
+                    style="text-align: center;margin-top: 9px;">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true" data-field="stt" style="width: 3cm;">Người nạp</th>
+                            <th data-sortable="true" data-field="stt" style="width: 3cm;">Số tiền</th>
+                            <th data-sortable="true" data-field="bsx" style="width: 5cm;">Trạng thái</th>
+                            <th data-sortable="true" data-field="bsx" style="width: 5cm;">Thời gian</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr class=" " data-id="5">
+                            <td style="min-width:20px;">
+                                <small class="text-muted">{{ i.user }}</small>
+                            </td>
+                            <td style="min-width:20px;">
+                                <small class="text-muted">{{ i.value }}</small>
+                            </td>
+                            <td style="min-width:20px;">
+                                    <small class="text-muted">{{ i.status }}</small>
+                            </td>
+                            <td style="min-width:20px;">
+                                    <small class="text-muted">{{ i.create_at }}</small>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

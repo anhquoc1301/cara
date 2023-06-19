@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'style/app.css'%}" />
     <link rel="stylesheet" href="{% static 'style/info.css'%}" />
     <link rel="stylesheet" href="{% static 'style/invest.css'%}" />
+    <link rel="stylesheet" href="{% static 'style/addcss.css' %}" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -60,49 +62,45 @@
                  id="type" />
                 <div class="item header-part1">Giao dịch thông thường</div>
                   <div class="list-item">
-                    <div class="item" value="0">
+                    <div class="item" value="Long">
                       <div class="name">long</div>
                       <div class="price">1.96</div>
                     </div>
-                    <div class="item" value="1">
+                    <div class="item" value="Short">
                       <div class="name">short</div>
                       <div class="price">1.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
+                    <div class="item" value="Long">
+                      <div class="name">single</div>
                       <div class="price">1.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
+                    <div class="item" value="Double">
+                      <div class="name">double</div>
                       <div class="price">1.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="LS">
+                      <div class="name">ls</div>
+                      <div class="price">3.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="SS">
+                      <div class="name">ss</div>
+                      <div class="price">3.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="LD">
+                      <div class="name">ld</div>
+                      <div class="price">3.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="SD">
+                      <div class="name">sd</div>
+                      <div class="price">3.96</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="Maximum">
+                      <div class="name">maximum</div>
+                      <div class="price">15</div>
                     </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
-                    </div>
-                    <div class="item">
-                      <div class="name">long</div>
-                      <div class="price">1.96</div>
+                    <div class="item" value="Minimum">
+                      <div class="name">minimum</div>
+                      <div class="price">15</div>
                     </div>
                   </div>
                   <div class="transaction">
@@ -113,7 +111,7 @@
                       <div class="input-number">
                         <input class="input-search" name="value" id="value" type="number" placeholder="Nhập số tiền giao dịch" />
                       </div>
-                      <button type="submit" class="btn btn-success">Mua ngay</button>
+                      <button type="submit" id="submit-btn"  class="btn btn-success">Mua ngay</button>
                   </div>
                 </div>
               </form>
@@ -121,53 +119,36 @@
           <div id="part2" class="part2">
             <div class="item header-part2">
               <span>Kết quả</span>
-              <span id="phase" style="float: right" value="{{phase.create_at}}"> {{phase.create_at}}Phase </span>
+              <span id="phase" style="float: right" hour="{{phase.create_at.hour}}" minute="{{phase.create_at.minute}}" second="{{phase.create_at.second}}" a = {{phase.a}} b={{phase.b}} c={{phase.c}} code={{phase.code}}>Phase: {{phase.code}} </span>
             </div>
+
+
             <div class="list-item">
               <div class="item first-item">
-                <i class="fa-solid fa-pause"></i> 2:59
+                <i class="fa-solid fa-pause" ></i> <span id="socketTime"></span>
               </div>
-              <div class="item">
+              {% for i in last_phases %}
+              <div class="item item-row">
                 <div class="left">
                   <span class="red green"
-                    >4 +5 +3 = <span class="total">12</span></span
+                    >{{i.a}} + {{i.b}} + {{i.c}} = <span class="total">{{ i.a|add:i.b|add:i.c }}</span></span
                   >
                 </div>
-                <div class="right red w-1">No.5714439</div>
-              </div>
-              <div class="item">
-                <div class="left">
-                  <span class="red green"
-                    >4 +5 +3 = <span class="total">12</span></span
-                  >
-                </div>
-                <div class="right red w-5">No.5714439</div>
-              </div>
-              <div class="item">
-                <div class="left">
-                  <span class="red green"
-                    >4 +5 +3 = <span class="total">12</span></span
-                  >
-                </div>
-                <div class="right red w-4">No.5714439</div>
-              </div>
-              <div class="item">
-                <div class="left">
-                  <span class="red green"
-                    >4 +5 +3 = <span class="total">12</span></span
-                  >
-                </div>
-                <div class="right green red w-2">No.5714439</div>
-              </div>
+                <div class="right length-row red" value="{{i.a|add:i.b|add:i.c}}">No.{{i.code}}</div>
+              </div>     
+              {% endfor %}
             </div>
             <div class="end-part2">
               <h1 class="total-today">{{trade_all_value}}</h1>
               <p>Khối lượng giao dịch cá nhân hôm nay</p>
-              <div class="box"></div>
+              <div class="box">
+                  <div class="items-box" id="items-box">
+                    
+                  </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       <div class="content2">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
@@ -200,10 +181,34 @@
             class="tab-pane fade show active"
             id="home"
             role="tabpanel"
-            aria-labelledby="home-tab"
-          >
-            <div class="list-item">
-              <div class="item">
+            aria-labelledby="home-tab">
+            <div id="list-item-phases" class="list-item">
+              {% for i in trades %}
+                {% if i.phase.phase_check == False %}
+                  <div class="item">
+                    <span style="float: left">
+                      <h4>Phase{{i.phase.code}}/USTD</h4>
+                      <p><i class="fa-solid fa-clock"></i> {{i.create_at}}</p>
+                    </span>
+                    <span style="float: right;text-align: right;">
+                      <h4>{{i.trade_value}}({{i.trade_value_win}})</h4>
+                      <p class="total green">undefinded ({{i.trade_type}})</p>
+                    </span>
+                  </div>
+                {% else %}
+                  <div class="item">
+                    <span style="float: left">
+                      <h4>Phase{{i.phase.code}}/USTD</h4>
+                      <p><i class="fa-solid fa-clock"></i> {{i.create_at}}</p>
+                    </span>
+                    <span style="float: right;text-align: right;">
+                      <h4>{{i.trade_value}}({{i.trade_value_win}})</h4>
+                      <p class="total green">{{i.phase.a}} + {{i.phase.b}} + {{i.phase.c}} = {{ i.phase.a|add:i.phase.b|add:i.phase.c }}({{i.trade_type}})</p>
+                    </span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              {% comment %} <div class="item">
                 <span style="float: left">
                   <h4>Phase5714444/USTD</h4>
                   <p><i class="fa-solid fa-clock"></i> 2023-05-18T00</p>
@@ -232,17 +237,7 @@
                   <h4>246(1599.0)</h4>
                   <p class="total green">1+1+0 = 2(SHORT,DOUBLE)</p>
                 </span>
-              </div>
-              <div class="item">
-                <span style="float: left">
-                  <h4>Phase5714444/USTD</h4>
-                  <p><i class="fa-solid fa-clock"></i> 2023-05-18T00</p>
-                </span>
-                <span style="float: right">
-                  <h4>246(1599.0)</h4>
-                  <p class="total green">1+1+0 = 2(SHORT,DOUBLE)</p>
-                </span>
-              </div>
+              </div> {% endcomment %}
             </div>
           </div>
           <div
@@ -314,42 +309,145 @@
         })
     })
   </script>
+  <script>
+    let itemsRows1 = document.querySelectorAll('.length-row')
+    let itemsRows = document.querySelectorAll('.item.item-row')
+    for (var element of itemsRows1) {
+      let class1 = Math.ceil(10 - 27/element.getAttribute("value"))
+      element.classList.add(`w-${class1}`);
+    }
+  </script>
+  
+  
   <script type="text/javascript">
-    let url = `ws://${window.location.host}/ws/socket-server/`
+    let url = `ws://${window.location.host}/ws/invest/`
 
     const chatSocket = new WebSocket(url)
-    console.log(chatSocket)
-    let phaseTime = document.querySelector('#phase').getAttribute('value');
-    console.log(phaseTime)
-
-    {% comment %} chatSocket.send(JSON.stringify({
-        'message':'helo from client'
-    })) {% endcomment %}
-    chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'Welcome to the chat. Type below to begin a conversation...' }))
-
-    chatSocket.onmessage = function(e){
-        let data = JSON.parse(e.data)
-        console.log('Data:', data)
-
- 
-        if(data.type === 'chat'){
-            let messages = document.getElementById('messages')
-
-            messages.insertAdjacentHTML('beforeend', `<div>
-                                    <p>${data.message}</p>
-                                </div>`)
-        }
+    let phaseTime = document.querySelector('#phase')
+    let timeDataBase = phaseTime.getAttribute('hour')*3600 + 
+    phaseTime.getAttribute('minute')*60 +
+    phaseTime.getAttribute('second')*1;
+    let response = {message:{
+      a : phaseTime.getAttribute('a'),
+      b : phaseTime.getAttribute('b'),
+      c : phaseTime.getAttribute('c'),
+      code:phaseTime.getAttribute('code'),
+    }}
+    var currentDate = new Date();
+    let socketTime = document.querySelector("#socketTime")
+    let btnSubmit = document.querySelector('#submit-btn')
+    currentDate.setHours(currentDate.getHours() - 7);
+    let timeNow =  currentDate.getHours() * 3600 + currentDate.getMinutes()*60 + currentDate.getSeconds()
+    if(timeNow < timeDataBase){
+      timeNow = timeNow + 60*60*24
     }
-        {% comment %} let form = document.getElementById('form')
-        form.addEventListener('submit', (e)=> {
-            e.preventDefault()
-            let message = e.target.message.value 
-            chatSocket.send(JSON.stringify({
-                'message':message
-            }))
-            form.reset()
-        }) {% endcomment %}
+    let totalSeconds = 180 - (timeNow-timeDataBase)
+    var countdownInterval = setInterval(countdown, 100);
+    function countdown() {
+    if (totalSeconds > 0) {
+      var minutes = Math.floor(totalSeconds / 60);
+      var seconds = totalSeconds % 60;
+      if(seconds >= 10) {
+        socketTime.innerHTML = minutes +":"+seconds 
+      } else {
+        socketTime.innerHTML = minutes +":0"+seconds 
+      }
+      if(totalSeconds < 30){
+        btnSubmit.setAttribute("disabled", true);
+      }
+      totalSeconds--;
+    } else if(totalSeconds == 0) {
+      socketTime.innerHTML = "0:00"
+      clearInterval(countdownInterval); // Dừng interval khi đếm ngược kết thúc
+      var existingElement = document.querySelector(".item.first-item");
+      var firstChildElement = existingElement.querySelector(":first-child");
+      firstChildElement.classList.add("fa-arrows-rotate");
+      // Nội dung HTML mới cần chèn
+      var htmlToInsert = `<div class="item item-row">
+              <div class="left">
+                <span class="red green"
+                  >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
+                >
+              </div>
+              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
+            </div> `;
+      existingElement.insertAdjacentHTML("afterend", htmlToInsert);
+      itemsRows[4].remove()
+    }
+  }
+    let resultsOfUser = []
+    let another_user = []
+    chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
+    chatSocket.onmessage = function(e){
+        response = JSON.parse(e.data)
+        console.log(response)
+        if(response.type =='cron'){
+              clearInterval(countdownInterval);
+              var existingElement2 = document.querySelector(".item.first-item");
+              var firstChildElement2 = existingElement2.querySelector(":first-child");
+              firstChildElement2.classList.remove("fa-arrows-rotate");
+              phaseTime.innerHTML = `Phase: ${response.message.code}`       
+              totalSeconds = 175
+              btnSubmit.removeAttribute("disabled");
+              countdownInterval = setInterval(countdown, 1000);
+        }else if(response.type =='user_trade'){
+          let itemPhases = document.querySelector('#list-item-phases')
+          // Tạo đối tượng Date từ chuỗi thời gian ban đầu
+          let originalDate = new Date(response.message.trade_time);
+          // Lấy các thành phần thời gian
+          let month = originalDate.toLocaleString('default', { month: 'long' });
+          let day = originalDate.getDate();
+          let year = originalDate.getFullYear();
+          let hour = originalDate.getHours();
+          let minute = originalDate.getMinutes();
+          let formattedTimeString = month + " " + day + ", " + year + ", " + hour + ":" + minute + (hour < 12 ? " a.m." : " p.m.");
+          let htmlToInsert2 = `<div class="item">
+            <span style="float: left">
+              <h4>Phase${response.message.phase}/USTD</h4>
+              <p><i class="fa-solid fa-clock"></i> ${formattedTimeString}</p>
+            </span>
+            <span style="float: right;text-align: right;" class="undefinded" value="${response.message.trade_id}">
+              <h4>${response.message.trade_value}(${response.message.trade_value_win})</h4>
+              <p class="total green"><span>undefinded (${response.message.trade_type})</span></p>
+            </span>
+          </div>`;
+          itemPhases.insertAdjacentHTML("afterbegin", htmlToInsert2);
+        }else if(response.type == "result_of_user"){
+          resultsOfUser.push(response.message)
+        }else if(response.type=="another_user"){
+          another_user.push(response.message)
+        }
+        if(another_user.length){
+          let abc = document.querySelector('#items-box')
+          another_user.forEach(item =>{
+            let htmlToInsert3 = `<div class="item">
+              <span>${item.trade_type_client}</span>
+              <span>${item.trade_value_client}</span>
+            </div>`;
+            abc.insertAdjacentHTML("afterend", htmlToInsert3);
+          })
 
+        }
+        setTimeout(() => {
+          let a = document.querySelectorAll('.undefinded')
+          if(resultsOfUser.length){
+            resultsOfUser.forEach(item =>{
+              for (let i = 0; i < a.length; i++) {
+                let trade_value_win = item.result == 'win' ? item.trade_value : `-${item.trade_value}`
+                let element = a[i];
+                let value = element.getAttribute('value')
+                if(value == item.trade_id){
+                  // Đoạn HTML cần chèn
+                  var htmlToInsert = `<h4>${item.trade_value}(${trade_value_win})</h4>
+                  <p class="total green">${item.a} + ${item.b} + ${item.c} = ${parseInt(item.a) + parseInt(item.b) +parseInt(item.c)} (${item.trade_type})</p>`;
+                  // Thêm đoạn HTML vào phần tử mục tiêu
+                  element.innerHTML = htmlToInsert;
+                }
+              }
+            })
+          }
+        },totalSeconds)
+    }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -373,7 +471,6 @@
     <script>
       const list = document.querySelectorAll(".invest .content .part1 .item");
       let inputValue = document.querySelector(".input-short-long");
-      console.log(inputValue)
       let value = null;
       list.forEach(function(element) {
         element.addEventListener('click', function() {

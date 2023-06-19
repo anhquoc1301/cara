@@ -71,7 +71,7 @@ class InputMoney(models.Model):
     value = models.IntegerField(null=False)
     value_control = models.IntegerField(null=True)
     value_real = models.IntegerField(null=True)
-    detail = models.CharField(max_length=255)
+    detail = models.CharField(max_length=255, null=True)
     status_choice = (('Pending', 'Pending'), ('Success', 'Success'), ('Fail', 'Fail'))
     status = models.CharField(choices=status_choice, default='Pending', max_length=20)
 
@@ -255,6 +255,7 @@ class PhaseUSDT(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     create_at = models.DateTimeField(auto_now_add=True)
 
+    phase_check=models.BooleanField(default=False)
     code = models.IntegerField()
     a = models.IntegerField(null=True)
     b = models.IntegerField(null=True)
@@ -297,18 +298,18 @@ class TradeUSDT(models.Model):
     trade_value = models.IntegerField()
     trade_value_win = models.IntegerField(null=True)
     type_choice = (
-        (1, 'Long'),
-        (2, 'Short'),
-        (3, 'Single'),
-        (4, 'Double'),
-        (5, 'LS'),
-        (6, 'SS'),
-        (7, 'LD'),
-        (8, 'SD'),
-        (9, 'Maximum'),
-        (10, 'Minimum'),
+        ('Long', 'Long'),
+        ('Short', 'Short'),
+        ('Single', 'Single'),
+        ('Double', 'Double'),
+        ('LS', 'LS'),
+        ('SS', 'SS'),
+        ('LD', 'LD'),
+        ('SD', 'SD'),
+        ('Maximum', 'Maximum'),
+        ('Minimum', 'Minimum'),
     )
-    trade_type = models.IntegerField(choices=type_choice)
+    trade_type = models.CharField(choices=type_choice, max_length=20)
     room_type = (
         (1, 'Normal'),
         (2, 'Vip'),

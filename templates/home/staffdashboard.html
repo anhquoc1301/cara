@@ -17,7 +17,7 @@
         <div class="header">
 			<div class="header-left">
 				<a href="" class="logo">
-					<img src="{% static 'homepage/assets/img/logo.png' %}" width="35" height="35" alt=""><span>Admin Page</span>
+					<img src="{% static 'homepage/assets/img/logo.png' %}" width="35" height="35" alt=""><span>Staff Page</span>
 				</a>
 			</div>
 			<a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
@@ -43,32 +43,8 @@
                     <ul>
                        <li class="menu-title"></li>
                         <li>
-                        <a href="{% url 'app:admin_dashboard' %}"><i></i> <span><h4><b>Thống kê</b></h4></span></a>
+                        <a href=""><i></i> <span><h4><b>Thống kê</b></h4></span></a>
                         </li>
-						<li>
-                            <a href="{% url 'app:list_accept_input_money' %}"><i></i> <span><h4><b>Duyệt lệnh nạp</b></h4></span></a>
-                        </li>
-                        <li>
-                            <a href="{% url 'app:list_accept_output_money' %}"><i></i> <span><h4><b>Duyệt lệnh rút</b></h4></span></a>
-                        </li>
-                        <li>
-                            <a href="{% url 'app:set_phase_usdt' %}"><i></i> <span><h4><b>Chỉnh kết quả</b></h4></span></a>
-                        </li>
-                        <li class="submenu">
-							<a href="#"><i></i> <span><h4><b>Quản lý</b></h4></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-                                <li><a href="{% url 'app:list_staff' %}">Quản lý nhân viên</a></li>
-                                <li><a href="{% url 'app:list_user' %}">Quản lý người dùng</a></li>
-                                <li><a href="{% url 'app:list_user_not_referrer' %}">Thêm mã giới thiệu người dùng</a></li>
-							</ul>
-						</li> 
-						<li class="submenu">
-							<a href="#"><i></i> <span><h4><b>Lịch sử</b></h4></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-                                <li><a href="{% url 'app:history_input_for_admin' %}">Lịch sử nạp tiền</a></li>
-                                <li><a href="{% url 'app:history_output_for_admin' %}">Lịch sử rút tiền</a></li>
-							</ul>
-						</li> 
                     </ul>
                 </div>
             </div>
@@ -86,7 +62,14 @@
     <div class="card">
         <div class="card-body">
             <div class="chart-title">
-                <h4>Thống kê nạp rút 3 tháng gần nhất</h4>
+                  <div>
+                <h4>Mã nhân viên: {{staff.code}}</h4>
+                  </div>
+                <h4>Số lượng user: {{total_user}}</h4>
+                <div>
+                <h4>Lương cơ bản: {{basic_salary}}</h4>
+                </div>
+                <h4>Tổng lương: {{total_salary}}</h4>
                 <div class="float-right">
                     <ul class="chat-user-total">
                     </ul>
@@ -111,19 +94,19 @@ $(document).ready(function() {
     // Bar Chart
 
     var barChartData = {
-        labels: ['Tháng ' + {{last_last_month.month}},'Tháng ' + {{last_month.month}},'Tháng ' + {{today.month}}],
+        labels: ['Tháng ' + {{today.month}}],
         datasets: [{
             label: 'Nạp',
             backgroundColor: 'rgba(0, 158, 251, 0.5)',
             borderColor: 'rgba(0, 158, 251, 1)',
             borderWidth: 1,
-            data: [{{input_last_last_month_value}},{{input_last_month_value}} ,{{input_month_value}}]
+            data: [{{input_month_value}}]
         }, {
             label: 'Rút',
             backgroundColor: 'rgba(255, 188, 53, 0.5)',
             borderColor: 'rgba(255, 188, 53, 1)',
             borderWidth: 1,
-            data: [{{output_last_last_month_value}},{{output_last_month_value}} ,{{output_month_value}}]
+            data: [{{output_month_value}}]
         }]
     };
     var ctx = document.getElementById('bargraph').getContext('2d');

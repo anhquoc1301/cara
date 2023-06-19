@@ -40,9 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'MultiLevelApp',
     'ModuleApp',
-    # 'chat',
     'django_crontab',
 ]
 
@@ -152,5 +150,6 @@ MESSAGE_TAGS = {
 }
 
 CRONJOBS = [
-    ('*/1 * * * *', 'ModuleApp.cron.my_scheduled_job')
+    ('*/1 * * * *', 'ModuleApp.cron.my_scheduled_job_phase')
+    ('0 2 * * *', 'ModuleApp.cron.my_scheduled_job_refresh_guest')
 ]

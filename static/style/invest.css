@@ -115,7 +115,7 @@
   border-radius: 2px;
 }
 .invest .content .part2 .item .right.w-1 {
-  width: 10%;
+  width: 5%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -123,7 +123,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-2 {
-  width: 20%;
+  width: 10%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -131,7 +131,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-3 {
-  width: 30%;
+  width: 15%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -139,7 +139,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-4 {
-  width: 40%;
+  width: 25%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -147,7 +147,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-5 {
-  width: 50%;
+  width: 35%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -155,7 +155,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-6 {
-  width: 60%;
+  width: 45%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -163,7 +163,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-7 {
-  width: 70%;
+  width: 55%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -171,7 +171,7 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-8 {
-  width: 80%;
+  width: 65%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
@@ -179,13 +179,14 @@
   text-align: right;
 }
 .invest .content .part2 .item .right.w-9 {
-  width: 90%;
+  width: 75%;
   line-height: 2.5rem;
   height: 2.5rem;
   background-color: rgba(250, 130, 130, 0.2);
   padding: 0 0.5rem;
   text-align: right;
 }
+
 .invest .content .part2 .item .right.green {
   background-color: rgba(24, 139, 102, 0.2);
 }

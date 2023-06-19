@@ -119,6 +119,7 @@ div#info .footer-info .item .icon {
 div#info .footer-info .item .title {
   font-size: 1.4rem;
 }
+
 div#info .footer-info .item.active {
   color: #1890ff;
 }

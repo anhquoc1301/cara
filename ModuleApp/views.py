@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib import messages
-from MultiLevelApp.decorators import admin_only, staff_only
+from .decorators import admin_only, staff_only, guest_only, user_only
 import random
 import datetime
 from channels.layers import get_channel_layer
@@ -105,8 +105,10 @@ class login(View):
         if myUser.type==0:
             return redirect('app:home')
         elif myUser.type==1:
-            return redirect('app:list_accept_input_money')
+            return redirect('app:admin_dashboard')
         elif myUser.type==2:
+            return redirect('app:staff_dashboard')
+        elif myUser.type==3:
             return redirect('app:home')
 
 @login_required
@@ -126,6 +128,8 @@ def service(request):
 @login_required
 def change_password(request):
     user=User.objects.get(id=request.user.id)
+    if user.type==3:
+        return redirect('app:change_password_for_guest')
     if request.method=="POST":
         password=request.POST['password']
         password1=request.POST['password1']
@@ -138,15 +142,20 @@ def change_password(request):
                 auth.login(request, user_response)
                 return redirect('app:home')
         else:
-            messages.warning('Mật khẩu không khớp!')
+            messages.warning(request, 'Mật khẩu không khớp!')
             return redirect('app:change_password')
     return render(request, 'TradeBTC/changepassword.html')
 
 @login_required
 def edit_password_wallet(request):
     user=User.objects.get(id=request.user.id)
+    if user.type==3:
+        return redirect('app:edit_password_wallet_for_guest')
     if user.wallet_password is not None:
         if request.method=="POST":
+            if request.POST['password']=='' or request.POST['password1']=='' or request.POST['password2']=='':
+                messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+                return redirect('app:edit_password_wallet')
             password=request.POST['password']
             password1=request.POST['password1']
             password2=request.POST['password2']
@@ -156,11 +165,14 @@ def edit_password_wallet(request):
                     messages.success(request, 'Đổi mật khẩu thành công!')
                     return redirect('app:dashboard')
             else:
-                messages.warning('Mật khẩu không khớp!')
+                messages.warning(request, 'Mật khẩu không khớp!')
                 return redirect('app:edit_password_wallet')
         return render(request, 'TradeBTC/changepasswithdrawmoney2.html')
     else:
         if request.method=="POST":
+            if request.POST['password1']=='' or request.POST['password2']=='':
+                messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+                return redirect('app:edit_password_wallet')
             password1=request.POST['password1']
             password2=request.POST['password2']
             if password1==password2:
@@ -169,7 +181,7 @@ def edit_password_wallet(request):
                     messages.success(request, 'Đổi mật khẩu thành công!')
                     return redirect('app:dashboard')
             else:
-                messages.warning('Mật khẩu không khớp!')
+                messages.warning(request, 'Mật khẩu không khớp!')
                 return redirect('app:edit_password_wallet')
         return render(request, 'TradeBTC/changepasswithdrawmoney1.html')
 
@@ -193,8 +205,13 @@ def wallet(request):
 @login_required
 def add_method(request):
     user=User.objects.get(id=request.user.id)
+    if user.type==3:
+        return redirect('app:add_method_for_guest')
     if request.method == 'POST':
         if request.POST.get("form_type") == 'formOne':
+            if request.POST['bank_name']=='' or request.POST['bank_account']=='' or request.POST['bank_opening_address']=='' or request.POST['user_name']=='' or request.POST['bank_number']==''or request.POST['bank_cvv']=='' or request.POST['bank_password']=='':
+                messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+                return redirect('app:add_method')
             bank_name = request.POST['bank_name']
             bank_account = request.POST['bank_account']
             bank_opening_address = request.POST['bank_opening_address']
@@ -211,6 +228,9 @@ def add_method(request):
                                         bank_password=bank_password)
             return redirect('app:wallet')
         elif request.POST.get("form_type") == 'formTwo':
+            if request.POST['user_name']=='' or request.POST['wallet_number']=='':
+                messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+                return redirect('app:add_method')
             user_name = request.POST['user_name']
             wallet_number = request.POST['wallet_number']
             DigitalWalletInfo.objects.create(user_name=user_name, 
@@ -221,7 +241,12 @@ def add_method(request):
 
 @login_required
 def input_money(request):
+    if request.user.type==3:
+        return redirect('app:input_money_for_guest')
     if request.method=="POST":
+        if request.POST.get('value') == '':
+            messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+            return redirect('app:input_money')
         value=int(request.POST.get('value'))
         user=User.objects.get(id=request.user.id)
         InputMoney.objects.create(value=value, user=user)
@@ -231,6 +256,8 @@ def input_money(request):
 
 @login_required
 def output_money(request):
+    if request.user.type==3:
+        return redirect('app:output_money_for_guest')
     user=User.objects.get(id=request.user.id)
     bankCard=BankCardInfo.objects.filter(user=user)
     digitalWallet=DigitalWalletInfo.objects.filter(user=user)
@@ -240,6 +267,9 @@ def output_money(request):
         'digital':digitalWallet,
     }
     if request.method=="POST":
+        if request.POST.get('value') == '':
+            messages.warning(request, 'Có lỗi, vui lòng nhập lại!')
+            return redirect('app:output_money')
         value=int(request.POST.get('value'))
         password=request.POST.get('password')
         if user.wallet>=value and user.wallet_password==password:
@@ -254,28 +284,31 @@ def output_money(request):
 
 @login_required
 def history_output(request):
-    data=OutputMoney.objects.filter(user=request.user)
+    if request.user.type==3:
+        return redirect('app:history_output_for_guest')
+    data=OutputMoney.objects.filter(user=request.user).order_by('-create_at')
     context={'data': data}
     return render(request, 'TradeBTC/historyoutput.html', context)
 
 @login_required
 def history_input(request):
-    data=InputMoney.objects.filter(user=request.user)
+    if request.user.type==3:
+        return redirect('app:history_input_for_guest')
+    data=InputMoney.objects.filter(user=request.user).order_by('-create_at')
     context={'data': data}
     return render(request, 'TradeBTC/historyinput.html', context)
 
 @login_required
 def history_trade(request):
-    data=Trade.objects.filter(user=request.user)
+    data=TradeUSDT.objects.filter(user=request.user).order_by('-create_at')
     context={'data': data}
-    return render(request, 'history_trade.html', context)
+    return render(request, 'TradeBTC/historytrade.html', context)
 
 #Just ADMIN
 @admin_only
 @login_required
 def list_accept_input_money(request):
     inputMoney=InputMoney.objects.filter(status='Pending')
-    print(inputMoney.count())
     context={'data': inputMoney}
     return render(request, 'home/listacceptinputmoney.html', context)
 
@@ -298,7 +331,7 @@ def accept_input_money(request, pk):
         user.save()
         messages.success(request, 'Thành công!')
         return redirect('app:list_accept_input_money')
-    return render(request, 'acceptinputmoney.html', context)
+    return render(request, 'home/acceptinputmoney.html', context)
 
 @login_required
 @admin_only
@@ -351,6 +384,18 @@ def list_staff(request):
     return render(request, 'home/liststaff.html', context)
 
 @login_required
+def history_output_for_admin(request):
+    data=OutputMoney.objects.all().order_by('-create_at')
+    context={'data': data}
+    return render(request, 'home/historyoutputforadmin.html', context)
+
+@login_required
+def history_input_for_admin(request):
+    data=InputMoney.objects.all().order_by('-create_at')
+    context={'data': data}
+    return render(request, 'home/historyinputforadmin.html', context)
+
+@login_required
 @admin_only
 def detail_staff(request, pk):
     staff=User.objects.get(id=pk)
@@ -359,8 +404,14 @@ def detail_staff(request, pk):
     inputs_month = []
     today = datetime.datetime.today()
     for user in users:
-        output_money_month = OutputMoney.objects.filter(user=user).filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
-        input_money_month = InputMoney.objects.filter(user=user).filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
+        try:
+            output_money_month = OutputMoney.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+        except:
+            output_money_month = []
+        try:
+            input_money_month = InputMoney.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+        except:
+            input_money_month = []
         outputs_month.append(output_money_month)
         inputs_month.append(input_money_month)
     input_month_value = 0
@@ -389,6 +440,9 @@ def detail_staff(request, pk):
     else:
         total_salary=basic_salary
     context={
+        'staff': staff,
+        'pk': pk,
+        'today': today,
         'output_month_value': output_month_value,
         'input_month_value': input_month_value,
         'basic_salary': basic_salary,
@@ -407,10 +461,16 @@ def detail_staff_last_month(request, pk):
     inputs_month = []
     today = datetime.date.today()
     first = today.replace(day=1)
-    last_month = first - datetime.timedelta(days=40)
+    last_month = first - datetime.timedelta(days=20)
     for user in users:
-        output_money_month = OutputMoney.objects.filter(user=user).filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
-        input_money_month = InputMoney.objects.filter(user=user).filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
+        try:
+            output_money_month = OutputMoney.objects.filter(user=user).filter(create_at__year=last_month.year).filter(create_at__month=last_month.month).filter(status='Success')
+        except:
+            output_money_month = []
+        try:
+            input_money_month = InputMoney.objects.filter(user=user).filter(create_at__year=last_month.year).filter(create_at__month=last_month.month).filter(status='Success')
+        except:
+            input_money_month = []
         outputs_month.append(output_money_month)
         inputs_month.append(input_money_month)
     input_month_value = 0
@@ -439,10 +499,14 @@ def detail_staff_last_month(request, pk):
     else:
         total_salary=basic_salary
     context={
+        'staff': staff,
+        'pk': pk,
+        'today': last_month,
         'output_month_value': output_month_value,
         'input_month_value': input_month_value,
         'basic_salary': basic_salary,
         'total_salary': total_salary,
+        'total_user': users.count()
     }
     
     return render(request, 'home/detailstafflastmonth.html', context)
@@ -497,14 +561,32 @@ def set_user_referrer(request, pk):
 def admin_dashboard(request):
     today = datetime.date.today()
     first = today.replace(day=1)
-    last_month = first - datetime.timedelta(days=40)
-    last_last_month = first - datetime.timedelta(days=70)
-    output_money_month = OutputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
-    input_money_month = InputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month).filter(status='Success')
-    output_money_last_month = OutputMoney.objects.filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
-    input_money_last_month = InputMoney.objects.filter(timestamp__year=last_month.year).filter(timestamp__month=last_month.month).filter(status='Success')
-    output_money_last_last_month = OutputMoney.objects.filter(timestamp__year=last_last_month.year).filter(timestamp__month=last_last_month.month).filter(status='Success')
-    input_money_last_last_month = InputMoney.objects.filter(timestamp__year=last_last_month.year).filter(timestamp__month=last_last_month.month).filter(status='Success')
+    last_month = first - datetime.timedelta(days=20)
+    last_last_month = first - datetime.timedelta(days=50)
+    try:
+        output_money_month = OutputMoney.objects.filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+    except:
+        output_money_month = []
+    try: 
+        input_money_month = InputMoney.objects.filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+    except: 
+        input_money_month = []
+    try:
+        output_money_last_month = OutputMoney.objects.filter(create_at__year=last_month.year).filter(create_at__month=last_month.month).filter(status='Success')
+    except:
+        output_money_last_month = []
+    try:
+        input_money_last_month = InputMoney.objects.filter(create_at__year=last_month.year).filter(create_at__month=last_month.month).filter(status='Success')
+    except: 
+        input_money_last_month = []
+    try:
+        output_money_last_last_month = OutputMoney.objects.filter(create_at__year=last_last_month.year).filter(create_at__month=last_last_month.month).filter(status='Success')
+    except: 
+        output_money_last_last_month = []
+    try:
+        input_money_last_last_month = InputMoney.objects.filter(create_at__year=last_last_month.year).filter(create_at__month=last_last_month.month).filter(status='Success')
+    except:
+        input_money_last_last_month = []
     output_month_value = 0
     input_month_value = 0
     output_last_month_value = 0
@@ -524,6 +606,9 @@ def admin_dashboard(request):
     for i in input_money_last_last_month:
         input_last_last_month_value+=i.value_control
     context={
+        'today': today,
+        'last_month': last_month,
+        'last_last_month': last_last_month,
         'output_month_value': output_month_value,
         'input_month_value': input_month_value,
         'output_last_month_value': output_last_month_value,
@@ -533,29 +618,87 @@ def admin_dashboard(request):
         }
     return render(request, 'home/admindashboard.html', context)
 
+@login_required
+@admin_only
+def set_phase_usdt(request):
+    set_phase = SetPhaseUSDT.objects.first()
+    if request.method == 'POST':
+        a = int(request.POST['a'])
+        b = int(request.POST['b'])
+        c = int(request.POST['c'])
+        set_phase.a=a
+        set_phase.b=b
+        set_phase.c=c
+        set_phase.save()
+        messages.success(request, 'Thành công!')
+        return redirect('app:set_phase_usdt')
+    return render(request, 'home/setphaseusdt.html')
+
+@login_required
+@admin_only
+def cancel_set_phase_usdt(request):
+    set_phase = SetPhaseUSDT.objects.first()
+    set_phase.refresh_phase_set()
+    messages.success(request, 'Hủy thành công!')
+    return redirect('app:set_phase_usdt')
 
 #Just Staff
 @login_required
 @staff_only
 def staff_dashboard(request):
     staff = request.user
+    staff = User.objects.get(id=staff.id)
     users=User.objects.filter(referrer=staff.code)
-    outputs = []
-    inputs = []
     outputs_month = []
     inputs_month = []
     today = datetime.datetime.today()
     for user in users:
-        output_money = OutputMoney.objects.filter(user=user)
-        input_money = InputMoney.objects.filter(user=user)
-        outputs.append(output_money)
-        inputs.append(input_money)
-        output_money_month = OutputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month)
-        input_money_month = InputMoney.objects.filter(timestamp__year=today.year).filter(timestamp__month=today.month)
+        try:
+            output_money_month = OutputMoney.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+        except:
+            output_money_month = []
+        try:
+            input_money_month = InputMoney.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(status='Success')
+        except:
+            input_money_month = []
         outputs_month.append(output_money_month)
         inputs_month.append(input_money_month)
+    input_month_value = 0
+    output_month_value = 0
+    for i in outputs_month:
+        output_month_value+=i.value
+    for i in inputs_month:
+        input_month_value+=i.value_control
+    revenue = input_month_value-output_month_value
+    if revenue>9999:
+        basic_salary=1100
+    else:
+        basic_salary=855
+    if 0<revenue<10000:
+        total_salary=basic_salary+revenue*0.05
+    elif 10000 <= revenue < 40000:
+        total_salary=basic_salary+revenue*0.07
+    elif 40000 <= revenue < 70000:
+        total_salary=basic_salary+revenue*0.09
+    elif 70000<=revenue<100000:
+        total_salary=basic_salary+revenue*0.11
+    elif 100000<=revenue<130000:
+        total_salary=basic_salary+revenue*0.13
+    elif 130000<=revenue:
+        total_salary=basic_salary+revenue*0.15
+    else:
+        total_salary=basic_salary
+    context={
+        'staff': staff,
+        'today': today,
+        'output_month_value': output_month_value,
+        'input_month_value': input_month_value,
+        'basic_salary': basic_salary,
+        'total_salary': total_salary,
+        'total_user': users.count()
+    }
     
-    return redirect('app:list_accept_output_money')
+    return render(request, 'home/staffdashboard.html', context)
 
 
 @login_required
@@ -567,7 +710,8 @@ def invest(request):
     today = datetime.datetime.today()
     last_phases= PhaseUSDT.objects.all().order_by('-create_at')[1:6]
     try:
-        trades=TradeUSDT.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(create_at__day=today.day)
+        trades=TradeUSDT.objects.filter(user=user).order_by('-create_at').filter(create_at__year=today.year).filter(create_at__month=today.month).filter(create_at__day=today.day)
+        
     except:
         trades = None
     trade_all_value=0
@@ -576,7 +720,7 @@ def invest(request):
     
     if request.method == 'POST':
         value=int(request.POST.get('value', None))
-        type=int(request.POST.get('type', None ))
+        type=request.POST.get('type', None )
         if user.wallet>=value:
             trade = TradeUSDT.objects.create(trade_value=value, trade_type=type, phase=phase, user=user)
             user.wallet-=value
@@ -584,14 +728,19 @@ def invest(request):
             trade_all_value_new=trade_all_value+value
             message = {
                 "wallet": str(user.wallet),
-                "trade": str(trade),
+                "phase": str(trade.phase.code),
+                "trade_value": str(trade.trade_value),
+                "trade_type": str(trade.trade_type),
+                "trade_value_win": str(trade.trade_value_win),
+                "trade_result": str(trade.result),
                 "trade_all_value": str(trade_all_value_new),
+                "trade_time": str(trade.create_at),
+                "trade_id": str(trade.id),
             }
-            print(user.username)
             async_to_sync(channel_layer.group_send)(
                 user.username,
                 {
-                    "type": "chat_message",
+                    "type": "user_trade_message",
                     "message": message
                 },
             )
@@ -602,7 +751,7 @@ def invest(request):
             async_to_sync(channel_layer.group_send)(
                 "normal",
                 {
-                    "type": "chat_message",
+                    "type": "another_user_message",
                     "message": message
                 },
             )
@@ -624,44 +773,47 @@ def cron(request):
 
     # result last phase
     lastPhase = PhaseUSDT.objects.latest('create_at')
+    lastPhase.phase_check=True
+    lastPhase.save()
     trades = TradeUSDT.objects.filter(phase=lastPhase)
     resultPhase = lastPhase.a+lastPhase.c+lastPhase.c
     for trade in trades:
-        if resultPhase >= 13 and trade.type_choice == 1:
-            trade.result = 1
+        if resultPhase >= 13 and trade.trade_type == 'Long':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
-        elif resultPhase <= 13 and trade.type_choice == 2:
-            trade.result = 1
+        elif resultPhase <= 13 and trade.trade_type == 'Short':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
-        elif resultPhase % 2 == 1 and trade.type_choice == 3:
-            trade.result = 1
+        elif resultPhase % 2 == 1 and trade.trade_type == 'Single':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
-        elif resultPhase % 2 == 0 and trade.type_choice == 4:
-            trade.result = 1
+        elif resultPhase % 2 == 0 and trade.trade_type == 'Double':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
-        elif resultPhase >= 13 and resultPhase % 2 == 1 and trade.type_choice == 5:
-            trade.result = 1
+        elif resultPhase >= 13 and resultPhase % 2 == 1 and trade.trade_type == 'LS':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
-        elif resultPhase <= 13 and resultPhase % 2 == 1 and trade.type_choice == 6:
-            trade.result = 1
+        elif resultPhase <= 13 and resultPhase % 2 == 1 and trade.trade_type == 'SS':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
-        elif resultPhase >= 13 and resultPhase % 2 == 0 and trade.type_choice == 7:
-            trade.result = 1
+        elif resultPhase >= 13 and resultPhase % 2 == 0 and trade.trade_type == 'LD':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
-        elif resultPhase <= 13 and resultPhase % 2 == 0 and trade.type_choice == 8:
-            trade.result = 1
+        elif resultPhase <= 13 and resultPhase % 2 == 0 and trade.trade_type == 'SD':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
-        elif resultPhase == 27 and trade.type_choice == 9:
-            trade.result = 1
+        elif resultPhase == 27 and trade.trade_type == 'Maximum':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*15
-        elif resultPhase == 0 and trade.type_choice == 10:
-            trade.result = 1
+        elif resultPhase == 0 and trade.trade_type == 'Minimum':
+            trade.result = 2
             trade.trade_value_win = trade.trade_value*15
         else:
-            trade.result=2
+            trade.trade_value_win = trade.trade_value
+            trade.result = 3
         trade.save()
         user=User.objects.get(id=trade.user.id)
-        if trade.result==1:
+        if trade.result==2:
             user.wallet+=trade.trade_value_win
             user.save()
             message = {
@@ -670,6 +822,7 @@ def cron(request):
                 "trade_id": str(trade.id),
                 "trade_value": str(trade.trade_value),
                 "trade_value_win": str(trade.trade_value_win),
+                "trade_type": str(trade.trade_type),
                 "a": str(lastPhase.a),
                 "b": str(lastPhase.b),
                 "c": str(lastPhase.c),
@@ -677,16 +830,18 @@ def cron(request):
             async_to_sync(channel_layer.group_send)(
                 user.username,
                 {
-                    "type": "chat_message",
+                    "type": "result_of_user_message",
                     "message": message
                 },
             )
 
-        elif trade.result==2:
+        elif trade.result==3:
             message = {
                 "result": "lose",
                 "trade_id": str(trade.id),
                 "trade_value": str(trade.trade_value),
+                "trade_value_win": str(trade.trade_value_win),
+                "trade_type": str(trade.trade_type),
                 "a": str(lastPhase.a),
                 "b": str(lastPhase.b),
                 "c": str(lastPhase.c),
@@ -694,7 +849,7 @@ def cron(request):
             async_to_sync(channel_layer.group_send)(
                 user.username,
                 {
-                    "type": "chat_message",
+                    "type": "result_of_user_message",
                     "message": message
                 },
             )
@@ -720,12 +875,13 @@ def cron(request):
     async_to_sync(channel_layer.group_send)(
         'normal',
         {
-            "type": "chat_message",
+            "type": "cron_message",
             "message": message
         },
     )
     return HttpResponse('chiehfhj,sdfe')
 
+# guest only
 def guest_login(request):
     guests=User.objects.filter(type=3)
     for i in guests:
@@ -738,5 +894,43 @@ def guest_login(request):
     check=GuestCheck.objects.get(user=guest)
     check.check_login=False
     check.save()
-    return redirect('app:dashboard')
-    
+    return redirect('app:home')
+
+@login_required
+@guest_only
+def history_input_for_guest(request):
+    return render(request, 'TradeBTC/historyinputforguest.html')
+
+@login_required
+@guest_only
+def history_output_for_guest(request):
+    return render(request, 'TradeBTC/historyoutputforguest.html')
+
+@login_required
+@guest_only
+def add_method_for_guest(request):
+    return render(request, 'TradeBTC/addmethodforguest.html')
+
+@login_required
+@guest_only
+def output_money_for_guest(request):
+    return render(request, 'TradeBTC/outputmoneyforguest.html')
+
+@login_required
+@guest_only
+def input_money_for_guest(request):
+    return render(request, 'TradeBTC/rechargeforguest.html')
+
+@login_required
+@guest_only
+def change_password_for_guest(request):
+    return render(request, 'TradeBTC/changepasswordforguest.html')
+
+@login_required
+@guest_only
+def edit_password_wallet_for_guest(request):
+    user=User.objects.get(id=request.user.id)
+    if user.wallet_password is not None:
+        return render(request, 'TradeBTC/changepasswithdrawmoney2forguest.html')
+    else:
+        return render(request, 'TradeBTC/changepasswithdrawmoney1forguest.html')

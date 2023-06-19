@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lịch sử giao dịch</title>
+    <title>Hồ sơ rút tiền</title>
     <link rel="stylesheet" href="{% static 'style/app.css' %}"/>
     <link rel="stylesheet" href="{% static 'style/servicecustomer.css' %}" />
     <link rel="stylesheet" href="{% static 'style/historymoney.css' %}" />
@@ -46,15 +46,8 @@
         </div>
       </div>
       <div class="container">
-        <h1 class="title-container">Lịch sử giao dịch</h1>
+        <h1 class="title-container">Hồ sơ rút tiền</h1>
         <div class="filter-service">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option hidden>Loại giao dịch</option>
-            <option>Các loại</option>
-            <option>USTD</option>
-            <option>BTC</option>
-            <option>ET2</option>
-          </select>
           <select class="form-control" id="exampleFormControlSelect1">
             <option hidden>Năm giao dịch</option>
             <option>2021</option>
@@ -78,33 +71,6 @@
           </select>
         </div>
         <div class="list-service">
-          {% for i in data %}
-          <div class="item-service">
-            <div class="name" style="width: 50%; text-align: left">
-              <i class="fa-solid fa-dollar-sign"></i>
-              <span class="name-service">{{i.trade_value}}USD</span>
-            </div>
-            <div class="number-account" style="width: 40%; text-align: left">
-              {{i.trade_type}}
-            </div>
-            {% if i.result == 1 %}
-            <div class="number-account" style="width: 40%; text-align: left">
-              undefinded
-            </div>
-            {% elif i.result == 2 %}
-            <div class="number-account" style="width: 40%; text-align: left">
-              win
-            </div>
-            {% else %}
-            <div class="number-account" style="width: 40%; text-align: left">
-              lose
-            </div>
-            {% endif %}
-            <div class="foward" style="width: 30%; text-align: right">
-              {{i.create_at}}
-            </div>
-          </div>
-          {% endfor %}
         </div>
       </div>
       <div class="footer"></div>

@@ -5,12 +5,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ví của tôi</title>
+    <title>Nạp tiền</title>
     <link rel="stylesheet" href="{% static 'style/app.css' %}"/>
     <link rel="stylesheet" href="{% static 'style/login.css' %}" />
     <link rel="stylesheet" href="{% static 'style/withdraw.css' %}" />
     <link rel="stylesheet" href="{% static 'style/recharge.css' %}" />
-    <link rel="stylesheet" href="{% static 'style/wallet.css' %}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -41,60 +40,71 @@
     ></script>
   </head>
   <body>
-    <div id="login-form" class="withdraw recharge wallet">
+    <div id="login-form" class="withdraw recharge">
       <div class="container mx-auto">
         <div class="logo-login mx-auto">
-          <img src="{% static 'assets/logo.png'%}" class="logo" alt="" srcset="" />
+          <img src="{% static 'assets/logo.png'%} " class="logo" alt="" srcset="" />
         </div>
         <h1 class="title">Ví của tôi</h1>
         <div class="total-money">
           <p>Tổng tài sản tương đương <i class="fa-solid fa-eye"></i></p>
           <h1 class="money">{{user.wallet}}</h1>
-          <div class="methods-money">
-            <div class="recharge btn">
-              <i class="fa-solid fa-light fa-download"></i>
-              <a href={% url 'app:input_money' %}>
-              <span>Nạp tiền</span>
-              </a>
-            </div>
-            <div class="withdraw btn">
-              <i class="fa-solid fa-light fa-credit-card"></i>
-              <a href={% url 'app:output_money' %}>
-              <span>Rút tiền</span>
-              </a>
-            </div>
-          </div>
         </div>
-        <div class="main-withdraw list-wallet">
-          <br />
-          <h2>Ví của tôi: {{bank.count|add:digital.count}} </h2>
-          <div class="item-wallet">
-            {% for i in bank %}
-            <div class="item">
-                <div class="name">
-                    <img src="{% static 'assets/btc.png'%}" width="40" alt="">
-                    <span>USTD</span>
-                </div>
-                <div>{{i.bank_number}}</div>
-                <div>{{i.bank_name}}</div>
+        <div class="main-withdraw">
+          <form action="" class="form-signin">
+            <h2>Chọn phương thức nạp tiền</h2>
+            <div class="method">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios1"
+                value="option1"
+                checked
+              />
+              <label class="form-check-label" for="exampleRadios1">
+                Nạp tiền USTD
+              </label>
             </div>
-            {% endfor %}
-            {% for i in digital %}
-            <div class="item">
-                <div class="name">
-                    <img src="{% static 'assets/btc.png'%}" width="40" alt="">
-                    <span>USTD</span>
-                </div>
-                <div>{{i.wallet_number}}</div>
-                <div>{{i.user_name}}</div>
+            <div class="method">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios2"
+                value="option1"
+                checked
+              />
+              <label class="form-check-label" for="exampleRadios2">
+                Thẻ ngân hàng
+              </label>
             </div>
-            {% endfor %}
-          </div>
+            <br>
+            <h2>Loại ví</h2>
+            <div class="input">
+              <input value="USTD" readonly type="text" />
+            </div>
+            <h2>Địa chỉ tài khoản</h2>
+            <div class="input">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <input value="RuiBTC" readonly type="text" />
+            </div>
+            <h2>Vui lòng nhập số tiền tín dụng</h2>
+            <div class="input">
+              <i class="fa-solid fa-money-bill"></i>
+              <input
+                placeholder="Vui lòng nhập số tiền tín dụng"
+                type="number"
+                name="value"
+              />
+            </div>
+            <div style="text-align:center">
+              <button type="button" class="btn btn-primary">Gửi đi</button>
+            </div>
+          </form>
         </div>
-        <a href={% url 'app:add_method' %}>
-        <button type="button" class="btn btn-primary">Thêm phương thức rút tiền khác</button>
-        </a>
       </div>
+      <div></div>
     </div>
   </body>
 </html>

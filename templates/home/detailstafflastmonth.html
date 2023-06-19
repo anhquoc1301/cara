@@ -1,9 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- index22:59-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -68,8 +65,8 @@
 						<li class="submenu">
 							<a href="#"><i></i> <span><h4><b>Lịch sử</b></h4></span> <span class="menu-arrow"></span></a>
 							<ul style="display: none;">
-                                <li><a href="{% url 'app:history_input_for_admin' %}">Lịch sử nạp tiền</a></li>
-                                <li><a href="{% url 'app:history_output_for_admin' %}">Lịch sử rút tiền</a></li>
+                                                                                                                                                <li><a href="{% url 'app:history_input_for_admin' %}">Lịch sử nạp tiền</a></li>
+                                                                                                                                                <li><a href="{% url 'app:history_output_for_admin' %}">Lịch sử rút tiền</a></li>
 							</ul>
 						</li> 
                     </ul>
@@ -85,33 +82,83 @@
                             </div>
                         {% endfor %}
                 {% endif %}
-                {% block content %}
-
-                {% endblock %}
-            </div>
+<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+    <div class="card">
+        <div class="card-body">
+            <div class="chart-title"> 
+                  <div>
+                <h4>Mã nhân viên: {{staff.code}}</h4>
+                  </div>
+                <h4>Số lượng user: {{total_user}}</h4>
+                <div>
+                <h4>Lương cơ bản: {{basic_salary}}</h4>
+                </div>
+                <h4>Tổng lương: {{total_salary}}</h4>
+                <div class="float-right">
+                  <button type="submit" class="btn btn-primary ml-5">
+                                    <a href="{% url 'app:detail_staff' pk %}">Tháng này</a>
+                  </button>
+                    <ul class="chat-user-total">
+                    </ul>
+                </div>
+            </div>	
+            <canvas id="bargraph"></canvas>
         </div>
     </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="{% static 'homepage/assets/js/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'homepage/assets/js/popper.min.js' %}"></script>
-    <script src="{% static 'homepage/assets/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'homepage/assets/js/jquery.slimscroll.js' %}"></script>
-    <script src="{% static 'homepage/assets/js/Chart.bundle.js' %}"></script>
-    <script src="{% static 'homepage/assets/js/chart.js' %}"></script>
-    <script src="{% static 'homepage/assets/js/app.js' %}"></script>
-    <script>
-        setTimeout(function () {
-            if ($('#msg').length > 0) {
-                $('#msg').remove();
+</div>
+</div>
+</div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script src="{% static 'homepage/assets/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'homepage/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'homepage/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'homepage/assets/js/jquery.slimscroll.js' %}"></script>
+<script src="{% static 'homepage/assets/js/Chart.bundle.js' %}"></script>
+<script>
+$(document).ready(function() {
+
+    // Bar Chart
+
+    var barChartData = {
+        labels: ['Tháng ' + {{today.month}}],
+        datasets: [{
+            label: 'Nạp',
+            backgroundColor: 'rgba(0, 158, 251, 0.5)',
+            borderColor: 'rgba(0, 158, 251, 1)',
+            borderWidth: 1,
+            data: [{{input_month_value}}]
+        }, {
+            label: 'Rút',
+            backgroundColor: 'rgba(255, 188, 53, 0.5)',
+            borderColor: 'rgba(255, 188, 53, 1)',
+            borderWidth: 1,
+            data: [{{output_month_value}}]
+        }]
+    };
+    var ctx = document.getElementById('bargraph').getContext('2d');
+    window.myBar = new Chart(ctx, {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            responsive: true,
+            legend: {
+                display: false,
             }
-        }, 2000)
-        $('#plateViewModal').on('show.bs.modal', function (e) {
-            var src = $(e.relatedTarget).attr('image-source');
-            $("#plateImg").attr("src", src);
-        });
-    </script>
+        }
+    });
+});
+</script>
+<script src="{% static 'homepage/assets/js/app.js' %}"></script>
+<script>
+setTimeout(function () {
+    if ($('#msg').length > 0) {
+        $('#msg').remove();
+    }
+}, 2000)
+$('#plateViewModal').on('show.bs.modal', function (e) {
+    var src = $(e.relatedTarget).attr('image-source');
+    $("#plateImg").attr("src", src);
+});
+</script>
 </body>
-
-
-<!-- index22:59-->
-</html>

@@ -100,10 +100,34 @@ class DashboardConsumer(WebsocketConsumer):
         #     }
         # )
 
-    def chat_message(self, event):
+    def cron_message(self, event):
         message = event['message']
 
         self.send(text_data=json.dumps({
-            'type':'chat',
+            'type':'cron',
+            'message':message
+        }))
+    
+    def user_trade_message(self, event):
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type':'user_trade',
+            'message':message
+        }))
+
+    def another_user_message(self, event):
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type':'another_user',
+            'message':message
+        }))
+
+    def result_of_user_message(self, event):
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type':'result_of_user',
             'message':message
         }))

@@ -5,9 +5,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng kí</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'style/app.css' %}"/>
     <link rel="stylesheet" href="{% static 'style/info.css' %}" />
+    <link rel="stylesheet" href="{% static 'style/addcss.css' %}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -101,7 +102,9 @@
           <div class="actions">
             <div class="item">
               <i class="fa-solid fa-light fa-list"></i>
+              <a href={% url 'app:history_trade' %}>
               <span>Lịch sử giao dịch</span>
+              </a>
             </div>
             <div class="item">
               <i class="fa-solid fa-light fa-download"></i>

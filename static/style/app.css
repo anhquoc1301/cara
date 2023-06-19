@@ -152,5 +152,7 @@ html {
     color: #fff;
   }
 }
-
+.footer-info .item .title a {
+  padding:  20px 10px;
+ }
 /*# sourceMappingURL=app.css.map */
