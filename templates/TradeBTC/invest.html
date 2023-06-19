@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{% static 'style/info.css'%}" />
     <link rel="stylesheet" href="{% static 'style/invest.css'%}" />
     <link rel="stylesheet" href="{% static 'style/addcss.css' %}" />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -48,7 +47,7 @@
     <div id="info" class="info invest">
       <div class="header">
         <i class="fa-solid fa-list"></i> <strong>USDT</strong>
-        <span class="red green">LONG,DOUBLE</span>
+        <span class="red green show-modal-option">LONG,DOUBLE</span>
         <span class="chart">
           <i class="fa-solid fa-chart-simple"></i>
         </span>
@@ -190,7 +189,7 @@
                       <h4>Phase{{i.phase.code}}/USTD</h4>
                       <p><i class="fa-solid fa-clock"></i> {{i.create_at}}</p>
                     </span>
-                    <span style="float: right;text-align: right;">
+                    <span style="float: right;text-align: right;" class="undefinded" value="{{i.id}}">
                       <h4>{{i.trade_value}}({{i.trade_value_win}})</h4>
                       <p class="total green">undefinded ({{i.trade_type}})</p>
                     </span>
@@ -202,7 +201,13 @@
                       <p><i class="fa-solid fa-clock"></i> {{i.create_at}}</p>
                     </span>
                     <span style="float: right;text-align: right;">
-                      <h4>{{i.trade_value}}({{i.trade_value_win}})</h4>
+                      <h4>{{i.trade_value}}
+                        {% if i.result == 2 %}
+                          ({{i.trade_value_win}})
+                        {% else %}
+                          (-{{i.trade_value_win}})
+                          {% endif %}
+                        </h4>
                       <p class="total green">{{i.phase.a}} + {{i.phase.b}} + {{i.phase.c}} = {{ i.phase.a|add:i.phase.b|add:i.phase.c }}({{i.trade_type}})</p>
                     </span>
                   </div>
@@ -254,7 +259,7 @@
         <div class="item">
           <div class="icon"><i class="fa-solid fa-house"></i></div>
           <div class="title">
-            <a href={% url 'app:home' %}>
+            <a style="color:#fff;" href={% url 'app:home' %}>
             Trang đầu
             </a>
           </div>
@@ -266,7 +271,9 @@
           <div class="icon have-active">
             <img src="{% static 'assets/tabbar_mony_y2.png'%}" width="24" alt="" />
           </div>
+          <a style="color:#fff;">
           <div class="title">Đầu tư</div>
+          </a>
         </div>
         <div class="item">
           <div class="icon no-active">
@@ -276,7 +283,7 @@
             <img src="{% static 'assets/tabbar_msg_y.png'%}" width="24" alt="" srcset="" />
           </div>
           <div class="title">
-            <a href={% url 'app:service' %}>
+            <a style="color:#fff;" href={% url 'app:service' %}>
             Dịch vụ khách hàng
             </a>
           </div>
@@ -284,14 +291,163 @@
         <div class="item">
           <div class="icon"><i class="fa-solid fa-user"></i></div>
           <div class="title">
-            <a href={% url 'app:dashboard' %}>
+            <a style="color:#fff;" href={% url 'app:dashboard' %}>
             Cá nhân
             </a>
           </div>
         </div>
       </div>
     </div>
+    <div class="list-option-select" hidden>
+      <div
+        class="nav flex-column nav-pills"
+        id="v-pills-tab"
+        role="tablist"
+        aria-orientation="vertical"
+      >
+        <a
+          class="nav-link active"
+          id="v-pills-home-tab"
+          data-toggle="pill"
+          href="#v-pills-home"
+          role="tab"
+          aria-controls="v-pills-home"
+          aria-selected="true"
+          ><img
+            width="30"
+            src="./assets/202211279ac6cf47-fd97-4a24-a5d7-0296a116fe89ustd.png"
+            alt=""
+          />
+          USTD
+        </a>
+        <a
+          class="nav-link"
+          id="v-pills-profile-tab"
+          data-toggle="pill"
+          href="#v-pills-profile"
+          role="tab"
+          aria-controls="v-pills-profile"
+          aria-selected="false"
+        >
+          <img
+            width="30"
+            src="./assets/2022112783237683-51f0-48ea-84b9-fa2d8bc562ad.png"
+            alt=""
+          />
+          BTC
+        </a>
+        <a
+          class="nav-link"
+          id="v-pills-messages-tab"
+          data-toggle="pill"
+          href="#v-pills-messages"
+          role="tab"
+          aria-controls="v-pills-messages"
+          aria-selected="false"
+          ><img
+            src="./assets/20221127945114d5-d116-4589-a751-b4f6f85bcca0.png"
+            alt=""
+            width="30"
+          />
+          ETH</a
+        >
+      </div>
+      <div class="tab-content" id="v-pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="v-pills-home"
+          role="tabpanel"
+          aria-labelledby="v-pills-home-tab"
+        >
+          <h1>USTD</h1>
+          <div class="list-select">
+            <div class="option">
+              <h2>Phòng sinh hoạt chung</h2>
+              <p>Giá tối thiểu để vào phòng là 0</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh vip</h2>
+              <p>Giá tối thiểu để vào phòng là 30000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh superior</h2>
+              <p>Giá tối thiểu để vào phòng là 150000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh cao cấp</h2>
+              <p>Giá tối thiểu để vào phòng là 600000</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="v-pills-profile"
+          role="tabpanel"
+          aria-labelledby="v-pills-profile-tab"
+        >
+          <h1>BTC</h1>
+          <div class="list-select">
+            <div class="option">
+              <h2>Phòng sinh hoạt chung</h2>
+              <p>Giá tối thiểu để vào phòng là 0</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh vip</h2>
+              <p>Giá tối thiểu để vào phòng là 30000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh superior</h2>
+              <p>Giá tối thiểu để vào phòng là 150000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh cao cấp</h2>
+              <p>Giá tối thiểu để vào phòng là 600000</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="v-pills-messages"
+          role="tabpanel"
+          aria-labelledby="v-pills-messages-tab"
+        >
+          <h1>ETH</h1>
+          <div class="list-select">
+            <div class="option">
+              <h2>Phòng sinh hoạt chung</h2>
+              <p>Giá tối thiểu để vào phòng là 0</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh vip</h2>
+              <p>Giá tối thiểu để vào phòng là 30000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh superior</h2>
+              <p>Giá tối thiểu để vào phòng là 150000</p>
+            </div>
+            <div class="option">
+              <h2>Phòng sinh cao cấp</h2>
+              <p>Giá tối thiểu để vào phòng là 600000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="icon-close" style="padding: 0.5rem">
+        <i style="color: black; font-size: 2rem" class="fa-solid fa-x"></i>
+      </div>
+    </div>
   </body>
+  <script>
+    let a = document.querySelector(".show-modal-option");
+    let b = document.querySelector(".list-option-select");
+    let c = document.querySelector(".icon-close");
+    a.onclick = () => {
+      b.removeAttribute("hidden");
+    };
+    c.onclick = () => {
+      b.setAttribute("hidden", true);
+    };
+  </script>
   <script>
     /*
     On focus out on input nickname,
@@ -336,13 +492,37 @@
     var currentDate = new Date();
     let socketTime = document.querySelector("#socketTime")
     let btnSubmit = document.querySelector('#submit-btn')
+    let resultsOfUser = []
     currentDate.setHours(currentDate.getHours() - 7);
     let timeNow =  currentDate.getHours() * 3600 + currentDate.getMinutes()*60 + currentDate.getSeconds()
     if(timeNow < timeDataBase){
       timeNow = timeNow + 60*60*24
     }
     let totalSeconds = 180 - (timeNow-timeDataBase)
-    var countdownInterval = setInterval(countdown, 100);
+    var countdownInterval = setInterval(countdown, 1000);
+    function callA(){
+        let a = document.querySelectorAll('.undefinded')
+        console.log(resultsOfUser)
+        if(resultsOfUser.length){
+          resultsOfUser.forEach(item =>{
+            console.log(item,"item")
+            for (let i = 0; i < a.length; i++) {
+              let trade_value_win = item.result == 'win' ? item.trade_value : `-${item.trade_value}`
+              let element = a[i];
+              let value = element.getAttribute('value',)
+              console.log(value)
+              if(value == item.trade_id){
+                console.log('Chạy vào đây tiếp')
+                // Đoạn HTML cần chèn
+                var htmlToInsert = `<h4>${item.trade_value}(${trade_value_win})</h4>
+                <p class="total green">${item.a} + ${item.b} + ${item.c} = ${parseInt(item.a) + parseInt(item.b) +parseInt(item.c)} (${item.trade_type})</p>`;
+                // Thêm đoạn HTML vào phần tử mục tiêu
+                element.innerHTML = htmlToInsert;
+              }
+            }
+          })
+        }
+    }
     function countdown() {
     if (totalSeconds > 0) {
       var minutes = Math.floor(totalSeconds / 60);
@@ -375,13 +555,13 @@
       itemsRows[4].remove()
     }
   }
-    let resultsOfUser = []
     let another_user = []
     chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
     chatSocket.onmessage = function(e){
         response = JSON.parse(e.data)
         console.log(response)
         if(response.type =='cron'){
+              callA()
               clearInterval(countdownInterval);
               var existingElement2 = document.querySelector(".item.first-item");
               var firstChildElement2 = existingElement2.querySelector(":first-child");
@@ -420,33 +600,14 @@
         if(another_user.length){
           let abc = document.querySelector('#items-box')
           another_user.forEach(item =>{
-            let htmlToInsert3 = `<div class="item">
+            let htmlToInsert3 = `<div class="item2">
               <span>${item.trade_type_client}</span>
               <span>${item.trade_value_client}</span>
             </div>`;
-            abc.insertAdjacentHTML("afterend", htmlToInsert3);
+            abc.insertAdjacentHTML("beforeend", htmlToInsert3);
           })
 
         }
-        setTimeout(() => {
-          let a = document.querySelectorAll('.undefinded')
-          if(resultsOfUser.length){
-            resultsOfUser.forEach(item =>{
-              for (let i = 0; i < a.length; i++) {
-                let trade_value_win = item.result == 'win' ? item.trade_value : `-${item.trade_value}`
-                let element = a[i];
-                let value = element.getAttribute('value')
-                if(value == item.trade_id){
-                  // Đoạn HTML cần chèn
-                  var htmlToInsert = `<h4>${item.trade_value}(${trade_value_win})</h4>
-                  <p class="total green">${item.a} + ${item.b} + ${item.c} = ${parseInt(item.a) + parseInt(item.b) +parseInt(item.c)} (${item.trade_type})</p>`;
-                  // Thêm đoạn HTML vào phần tử mục tiêu
-                  element.innerHTML = htmlToInsert;
-                }
-              }
-            })
-          }
-        },totalSeconds)
     }
     </script>
 

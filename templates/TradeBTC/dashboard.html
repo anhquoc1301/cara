@@ -80,7 +80,7 @@
             </div>
             <div class="profit">
               <p class="text">Lãi lỗ trong ngày</p>
-              <div class="number">0.0</div>
+              <div class="number">{{total}}</div>
             </div>
           </div>
         </div>
@@ -88,13 +88,13 @@
           <div class="money">
             <div class="recharge btn">
               <i class="fa-solid fa-light fa-download"></i>
-              <a href={% url 'app:input_money' %}>
+              <a style="color:#fff;" href={% url 'app:input_money' %}>
               <span>Nạp tiền</span>
               </a>
             </div>
             <div class="withdraw btn">
               <i class="fa-solid fa-light fa-credit-card"></i>
-              <a href={% url 'app:output_money' %}>
+              <a style="color:#fff;" href={% url 'app:output_money' %}>
                 <span>Rút tiền</span>
               </a>
             </div>
@@ -149,7 +149,7 @@
         <div class="item ">
           <div class="icon"><i class="fa-solid fa-house"></i></div>
           <div class="title">
-            <a href={% url 'app:home' %}>
+            <a style="color:#fff;" href={% url 'app:home' %}>
             Trang đầu
             </a>
           </div>
@@ -162,7 +162,7 @@
             <img src="{% static 'assets/tabbar_mony_y2.png'%}" width="24" alt="" />
           </div>
           <div class="title">
-            <a href={% url 'app:invest' %}>
+            <a style="color:#fff;" href={% url 'app:invest' %}>
               Đầu tư
               </a>
           </div>
@@ -175,7 +175,7 @@
             <img src="{% static 'assets/tabbar_msg_y.png'%}" width="24" alt="" srcset="" />
           </div>
           <div class="title">
-            <a href={% url 'app:service' %}>
+            <a style="color:#fff;" href={% url 'app:service' %}>
             Dịch vụ khách hàng
             </a>
           </div>
@@ -183,7 +183,7 @@
         <div class="item active">
           <div class="icon"><i class="fa-solid fa-user"></i></div>
           <div class="title">
-            <a href={% url 'app:dashboard' %}>
+            <a style="color:#fff;" href={% url 'app:dashboard' %}>
             Cá nhân
             </a>
           </div>

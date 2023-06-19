@@ -188,7 +188,21 @@ def edit_password_wallet(request):
 @login_required
 def dashboard(request):
     user=User.objects.get(id=request.user.id)
-    return render(request, 'TradeBTC/dashboard.html', {'user': user})
+    trades=TradeUSDT.objects.filter(user=user)
+    interest = 0
+    losses = 0
+    for trade in trades:
+        if trade.result == 2:
+            interest+=trade.trade_value_win
+        if trade.result == 3:
+            losses+=trade.trade_value
+    total=interest-losses
+    
+    context={
+        'user': user,
+        'total': total,
+    }
+    return render(request, 'TradeBTC/dashboard.html', context)
 
 @login_required
 def wallet(request):
