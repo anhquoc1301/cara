@@ -333,6 +333,9 @@ class TradeUSDT(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+    class Meta:
+        ordering = ['create_at']
 
 
 class Statistic(models.Model):

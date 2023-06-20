@@ -15,6 +15,7 @@ import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponse
+import math
 # Create your views here.
 
 def main(request):
@@ -792,7 +793,7 @@ def cron(request):
     trades = TradeUSDT.objects.filter(phase=lastPhase)
     resultPhase = lastPhase.a+lastPhase.c+lastPhase.c
     for trade in trades:
-        if resultPhase >= 13 and trade.trade_type == 'Long':
+        if resultPhase >= 14 and trade.trade_type == 'Long':
             trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
         elif resultPhase <= 13 and trade.trade_type == 'Short':
@@ -804,13 +805,13 @@ def cron(request):
         elif resultPhase % 2 == 0 and trade.trade_type == 'Double':
             trade.result = 2
             trade.trade_value_win = trade.trade_value*1.96
-        elif resultPhase >= 13 and resultPhase % 2 == 1 and trade.trade_type == 'LS':
+        elif resultPhase >= 14 and resultPhase % 2 == 1 and trade.trade_type == 'LS':
             trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
         elif resultPhase <= 13 and resultPhase % 2 == 1 and trade.trade_type == 'SS':
             trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
-        elif resultPhase >= 13 and resultPhase % 2 == 0 and trade.trade_type == 'LD':
+        elif resultPhase >= 14 and resultPhase % 2 == 0 and trade.trade_type == 'LD':
             trade.result = 2
             trade.trade_value_win = trade.trade_value*3.96
         elif resultPhase <= 13 and resultPhase % 2 == 0 and trade.trade_type == 'SD':
@@ -835,7 +836,7 @@ def cron(request):
                 "wallet": str(user.wallet),
                 "trade_id": str(trade.id),
                 "trade_value": str(trade.trade_value),
-                "trade_value_win": str(trade.trade_value_win),
+                "trade_value_win": str(math.modf(trade.trade_value_win)[1]),
                 "trade_type": str(trade.trade_type),
                 "a": str(lastPhase.a),
                 "b": str(lastPhase.b),
