@@ -69,7 +69,7 @@
                       <div class="name">short</div>
                       <div class="price">1.96</div>
                     </div>
-                    <div class="item" value="Long">
+                    <div class="item" value="Single">
                       <div class="name">single</div>
                       <div class="price">1.96</div>
                     </div>
@@ -468,6 +468,8 @@
   <script>
     let itemsRows1 = document.querySelectorAll('.length-row')
     let itemsRows = document.querySelectorAll('.item.item-row')
+    var existingElement = document.querySelector(".item.first-item");
+    var firstChildElement = existingElement.querySelector(":first-child");
     for (var element of itemsRows1) {
       let class1 = Math.ceil(10 - 27/element.getAttribute("value"))
       element.classList.add(`w-${class1}`);
@@ -502,12 +504,11 @@
     var countdownInterval = setInterval(countdown, 1000);
     function callA(){
         let a = document.querySelectorAll('.undefinded')
-        console.log(resultsOfUser)
         if(resultsOfUser.length){
           resultsOfUser.forEach(item =>{
             console.log(item,"item")
             for (let i = 0; i < a.length; i++) {
-              let trade_value_win = item.result == 'win' ? item.trade_value : `-${item.trade_value}`
+              let trade_value_win = item.result == 'win' ? item.trade_value_win : `-${item.trade_value}`
               let element = a[i];
               let value = element.getAttribute('value',)
               console.log(value)
@@ -522,6 +523,20 @@
             }
           })
         }
+    }
+    if(totalSeconds < 0) {
+      firstChildElement.classList.add("fa-arrows-rotate");
+      // Nội dung HTML mới cần chèn
+      var htmlToInsert = `<div class="item item-row">
+              <div class="left">
+                <span class="red green"
+                  >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
+                >
+              </div>
+              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
+            </div> `;
+      existingElement.insertAdjacentHTML("afterend", htmlToInsert);
+      itemsRows[4].remove()
     }
     function countdown() {
     if (totalSeconds > 0) {
@@ -539,29 +554,34 @@
     } else if(totalSeconds == 0) {
       socketTime.innerHTML = "0:00"
       clearInterval(countdownInterval); // Dừng interval khi đếm ngược kết thúc
-      var existingElement = document.querySelector(".item.first-item");
-      var firstChildElement = existingElement.querySelector(":first-child");
-      firstChildElement.classList.add("fa-arrows-rotate");
-      // Nội dung HTML mới cần chèn
-      var htmlToInsert = `<div class="item item-row">
-              <div class="left">
-                <span class="red green"
-                  >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
-                >
-              </div>
-              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
-            </div> `;
-      existingElement.insertAdjacentHTML("afterend", htmlToInsert);
-      itemsRows[4].remove()
+      setTimeout(()=>{
+        firstChildElement.classList.add("fa-arrows-rotate");
+        // Nội dung HTML mới cần chèn
+        var htmlToInsert = `<div class="item item-row">
+                <div class="left">
+                  <span class="red green"
+                    >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
+                  >
+                </div>
+                <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
+              </div> `;
+        existingElement.insertAdjacentHTML("afterend", htmlToInsert);
+        itemsRows[4].remove()
+      }, 50);
     }
   }
-    let another_user = []
     chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
+    let oldCron = response.message.code;
+    console.log(oldCron)
     chatSocket.onmessage = function(e){
+        let another_user = []
         response = JSON.parse(e.data)
         console.log(response)
         if(response.type =='cron'){
               callA()
+              newCron = response.message.code
+              console.log(oldCron)
+              oldCron = newCron
               clearInterval(countdownInterval);
               var existingElement2 = document.querySelector(".item.first-item");
               var firstChildElement2 = existingElement2.querySelector(":first-child");
@@ -571,6 +591,7 @@
               btnSubmit.removeAttribute("disabled");
               countdownInterval = setInterval(countdown, 1000);
         }else if(response.type =='user_trade'){
+          another_user = []
           let itemPhases = document.querySelector('#list-item-phases')
           // Tạo đối tượng Date từ chuỗi thời gian ban đầu
           let originalDate = new Date(response.message.trade_time);
@@ -595,12 +616,14 @@
         }else if(response.type == "result_of_user"){
           resultsOfUser.push(response.message)
         }else if(response.type=="another_user"){
+          another_user = []
           another_user.push(response.message)
         }
+        console.log(another_user)
         if(another_user.length){
           let abc = document.querySelector('#items-box')
           another_user.forEach(item =>{
-            let htmlToInsert3 = `<div class="item2">
+            let htmlToInsert3 = `<div class="item">
               <span>${item.trade_type_client}</span>
               <span>${item.trade_value_client}</span>
             </div>`;
