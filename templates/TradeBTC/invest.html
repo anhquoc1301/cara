@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Đăng kí</title>
+    <title>Đầu tư</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="{% static 'style/app.css'%}" />
     <link rel="stylesheet" href="{% static 'style/info.css'%}" />
@@ -105,7 +105,7 @@
                   <div class="transaction">
                     <div class="available">
                       <p>Có sẵn</p>
-                      <p>{{user.wallet}} USDT</p>
+                      <p id="my-money">{{user.wallet}} USDT</p>
                     </div>
                       <div class="input-number">
                         <input class="input-search" name="value" id="value" type="number" placeholder="Nhập số tiền giao dịch" />
@@ -138,7 +138,7 @@
               {% endfor %}
             </div>
             <div class="end-part2">
-              <h1 class="total-today">{{trade_all_value}}</h1>
+              <h1 class="total-today" id="total-today">{{trade_all_value}}</h1>
               <p>Khối lượng giao dịch cá nhân hôm nay</p>
               <div class="box">
                   <div class="items-box" id="items-box">
@@ -436,6 +436,9 @@
     })
   </script>
   <script>
+
+  </script>
+  <script>
     let itemsRows1 = document.querySelectorAll('.length-row')
     let itemsRows = document.querySelectorAll('.item.item-row')
     var existingElement = document.querySelector(".item.first-item");
@@ -471,6 +474,9 @@
       timeNow = timeNow + 60*60*24
     }
     let totalSeconds = 180 - (timeNow-timeDataBase)
+    if(totalSeconds < 30){
+      btnSubmit.setAttribute("disabled", true);
+    }
     var countdownInterval = setInterval(countdown, 1000);
     function callA(){
         let a = document.querySelectorAll('.undefinded')
@@ -493,6 +499,12 @@
             }
           })
         }
+        let my_money = document.querySelector('#my-money')
+        if(resultsOfUser.length){
+          my_money.innerHTML = Math.floor(resultsOfUser[resultsOfUser.length-1].wallet)
+        }
+
+
     }
     if(totalSeconds < 0) {
       firstChildElement.classList.add("fa-arrows-rotate");
@@ -562,6 +574,10 @@
               countdownInterval = setInterval(countdown, 1000);
         }else if(response.type =='user_trade'){
           another_user = []
+          let my_money = document.querySelector('#my-money')
+          let total_today = document.querySelector('#total-today')
+          my_money.innerHTML = Math.floor(response.message.wallet)
+          total_today.innerHTML = Math.floor(response.message.trade_all_value)
           let itemPhases = document.querySelector('#list-item-phases')
           // Tạo đối tượng Date từ chuỗi thời gian ban đầu
           let originalDate = new Date(response.message.trade_time);
@@ -589,6 +605,7 @@
           another_user = []
           another_user.push(response.message)
         }
+        
         console.log(another_user)
         if(another_user.length){
           let abc = document.querySelector('#items-box')
@@ -639,6 +656,7 @@
           inputValue.setAttribute('value', value);
         });
       });
+
     </script>
 
 </html>

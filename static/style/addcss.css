@@ -68,9 +68,6 @@
     max-height: 6rem;
     overflow: auto;
   }
-  .invest .content .part2 .items-box::-webkit-scrollbar {
-    width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
-  }
   .invest .content .part2 .items-box .item {
     font-size: 1rem;
     height: 1.5rem;
@@ -82,5 +79,7 @@
     background-color: #112029;
   }
 }
-
+.invest .content .part2 .box::-webkit-scrollbar {
+  width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
+}
 /*# sourceMappingURL=addcss.css.map */

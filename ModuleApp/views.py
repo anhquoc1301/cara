@@ -736,6 +736,8 @@ def invest(request):
     if request.method == 'POST':
         value=int(request.POST.get('value', None))
         type=request.POST.get('type', None )
+        if value=='' or type=='':
+            return redirect('app:invest')
         if user.wallet>=value:
             trade = TradeUSDT.objects.create(trade_value=value, trade_type=type, phase=phase, user=user)
             user.wallet-=value
@@ -853,6 +855,7 @@ def cron(request):
         elif trade.result==3:
             message = {
                 "result": "lose",
+                "wallet": str(user.wallet),
                 "trade_id": str(trade.id),
                 "trade_value": str(trade.trade_value),
                 "trade_value_win": str(trade.trade_value_win),
