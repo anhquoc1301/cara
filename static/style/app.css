@@ -146,7 +146,13 @@ html {
     color: #fff;
   }
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-height: 800px ) {
+  html {
+    font-size: 7.5px;
+    color: #fff;
+  }
+}
+@media only screen and (max-width: 768px ) {
   html {
     font-size: 7px;
     color: #fff;

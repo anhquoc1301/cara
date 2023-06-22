@@ -22,6 +22,7 @@ class User(AbstractUser):
 
 class GuestCheck(models.Model):
 
+    username=models.CharField(max_length=20)
     check_login = models.BooleanField(default=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='guest_check'

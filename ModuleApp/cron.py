@@ -1,7 +1,7 @@
 from .models import User, TradeUSDT, GuestCheck
 import requests
 def my_scheduled_job_phase():
-    response = requests.get("http://127.0.0.1:8000/cron/")
+    response = requests.get("https://carafinance.com/cron/")
 
 def my_scheduled_job_refresh_guest():
     guests = User.objects.filter(type=3)

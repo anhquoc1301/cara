@@ -36,7 +36,7 @@
 @media only screen and (max-width: 1024px) {
   .invest .content {
     padding: 2rem;
-    height: 38rem;
+    height: 42rem;
   }
   .invest .content .part1 .list-item {
     max-height: 20rem;
@@ -75,7 +75,7 @@
     text-transform: uppercase;
   }
   .invest .content .part2 .end-part2 .box {
-    height: 8.5rem;
+    height: 7.5rem;
     background-color: #112029;
   }
 }
@@ -83,3 +83,10 @@
   width: 0; /* Ẩn thanh cuộn ngang trên trình duyệt Chrome, Safari */
 }
 /*# sourceMappingURL=addcss.css.map */
+
+@media only screen and (min-height: 820px){
+  .invest .content {
+      padding: 2rem;
+      height: 50rem;
+  }
+}

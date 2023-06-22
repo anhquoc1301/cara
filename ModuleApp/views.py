@@ -18,6 +18,26 @@ from django.http import HttpResponse
 import math
 # Create your views here.
 
+
+# guests=User.objects.filter(type=3)
+# for i in guests:
+#     check=GuestCheck.objects.get(user=i)
+#     check.delete()
+#     i.delete()
+
+# for i in range(300):
+#     code=random.randint(1000000, 9999999)
+#     while User.objects.filter(code=code).exists():
+#         code = random.randint(1000000, 9999999)
+#     username = 'guest'+ str(i)
+#     password = '123456'
+#     guest=User.objects.create_user(username=username, password=password, email=None)
+#     guest.type=3
+#     guest.wallet=10000
+#     guest.code=code
+#     guest.save()
+#     guestCheck=GuestCheck.objects.create(check_login=True, user=guest, username=username)
+
 def main(request):
     today = datetime.datetime.today()
     # users=User.objects.all().order_by('-create_at')[1:6]
@@ -34,33 +54,6 @@ def main(request):
         print(request.POST.get("username"))
     return render(request, 'home/admindashboard.html')
 
-# def main(request):
-#     qs= Statistic.objects.all()
-#     if request.method=="POST":
-#         new_stat = request.POST.get('new-statistic')
-#         obj , _ =Statistic.objects.get_or_create(name=new_stat)
-#         return redirect("stats:dashboard", obj.slug)
-#     return render(request, 'main.html', {'qs': qs})
-
-def dashboard(request, slug):
-    print("check")
-    obj = get_object_or_404(Statistic, slug=slug)
-    return render(request, 'dashboard.html',{
-        'name': obj.name,
-        'slug': obj.slug,
-        'data': obj.data,
-        'user': request.user.username if request.user.username else fake.name()
-    })
-
-def chart_data(request, slug):
-    obj = get_object_or_404(Statistic, slug=slug)
-    qs = obj.data.values('owner').annotate(Sum('value'))
-    chart_data = [x['value__sum'] for x in qs]
-    chart_labels= [x['owner'] for x in qs]
-    return JsonResponse({
-        'chartData': chart_data,
-        'chartLabels': chart_labels
-    })
 
 class register(View):
     def get(self, request):
@@ -189,7 +182,8 @@ def edit_password_wallet(request):
 @login_required
 def dashboard(request):
     user=User.objects.get(id=request.user.id)
-    trades=TradeUSDT.objects.filter(user=user)
+    today = datetime.datetime.today()
+    trades=TradeUSDT.objects.filter(user=user).filter(create_at__year=today.year).filter(create_at__month=today.month).filter(create_at__day=today.day)
     interest = 0
     losses = 0
     for trade in trades:
@@ -198,7 +192,6 @@ def dashboard(request):
         if trade.result == 3:
             losses+=trade.trade_value
     total=interest-losses
-    
     context={
         'user': user,
         'total': total,
@@ -901,18 +894,15 @@ def cron(request):
 
 # guest only
 def guest_login(request):
-    guests=User.objects.filter(type=3)
-    for i in guests:
-        check=GuestCheck.objects.get(user=i)
+    for i in range(300):
+        username1='guest'+str(i)
+        check=GuestCheck.objects.get(username=username1)
         if check.check_login==True:
-            guest=i
-            break
-    myGuest = authenticate(request, username=guest.username, password='123456')
-    auth.login(request, myGuest)
-    check=GuestCheck.objects.get(user=guest)
-    check.check_login=False
-    check.save()
-    return redirect('app:home')
+            myGuest = authenticate(request, username=username1, password='123456')
+            auth.login(request, myGuest)
+            check.check_login=False
+            check.save()
+            return redirect('app:home')
 
 @login_required
 @guest_only

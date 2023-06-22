@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import main, chart_data, home, login, logout, register, change_password, edit_password_wallet
+from .views import main, home, login, logout, register, change_password, edit_password_wallet
 from .views import dashboard, wallet, add_method, input_money, output_money, history_input, history_output
 from .views import list_accept_input_money, accept_input_money, cancel_status_input_money, list_accept_output_money
 from .views import cancel_status_output_money, accept_status_output_money, list_staff, list_user, history_trade

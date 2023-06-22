@@ -148,7 +148,7 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
-
 CRONJOBS = [
-    ('*/3 * * * *', 'ModuleApp.cron.my_scheduled_job_phase')
+    ('*/3 * * * *', 'ModuleApp.cron.my_scheduled_job_phase'),
+    ('0 2 * * *', 'ModuleApp.cron.my_scheduled_job_refresh_guest'),
 ]

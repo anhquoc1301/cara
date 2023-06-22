@@ -312,4 +312,57 @@
   }
 }
 
+@media only screen and (max-width: 500px) {
+  .invest .content .part2 {
+    width: 52%;
+    height: 8rem;
+    float: right;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .invest .first-box {
+    width: 80%;
+  }
+  .invest .content .part2 .item .right.w-1 {
+    width: 5%;
+    
+  }
+  .invest .content .part2 .item .right.w-2 {
+    width: 10%;
+    
+  }
+  .invest .content .part2 .item .right.w-3 {
+    width: 15%;
+    
+  }
+  .invest .content .part2 .item .right.w-4 {
+    width: 20%;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    background-color: rgba(250, 130, 130, 0.2);
+    padding: 0 0.5rem;
+    text-align: right;
+  }
+  .invest .content .part2 .item .right.w-5 {
+    width: 25%;
+    
+  }
+  .invest .content .part2 .item .right.w-6 {
+    width: 38%;
+    
+  }
+  .invest .content .part2 .item .right.w-7 {
+    width: 45%;
+    
+  }
+  .invest .content .part2 .item .right.w-8 {
+    width: 58%;
+    
+  }
+  .invest .content .part2 .item .right.w-9 {
+    width: 65%;
+  }
+}
+
+
 /*# sourceMappingURL=invest.css.map */

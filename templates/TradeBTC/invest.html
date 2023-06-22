@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Đầu tư</title>
+    <title>Đầu tư | Carafinance.com</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="{% static 'style/app.css'%}" />
     <link rel="stylesheet" href="{% static 'style/info.css'%}" />
@@ -230,7 +230,7 @@
           <div class="icon"><i class="fa-solid fa-house"></i></div>
           <div class="title">
             <a style="color:#fff;" href={% url 'app:home' %}>
-            Trang đầu
+            Trang chủ
             </a>
           </div>
         </div>
@@ -285,7 +285,7 @@
           aria-selected="true"
           ><img
             width="30"
-            src="./assets/202211279ac6cf47-fd97-4a24-a5d7-0296a116fe89ustd.png"
+            src="{% static 'assets/202211279ac6cf47-fd97-4a24-a5d7-0296a116fe89ustd.png' %} "
             alt=""
           />
           USTD
@@ -301,7 +301,7 @@
         >
           <img
             width="30"
-            src="./assets/2022112783237683-51f0-48ea-84b9-fa2d8bc562ad.png"
+            src="{% static 'assets/2022112783237683-51f0-48ea-84b9-fa2d8bc562ad.png' %}"
             alt=""
           />
           BTC
@@ -315,7 +315,7 @@
           aria-controls="v-pills-messages"
           aria-selected="false"
           ><img
-            src="./assets/20221127945114d5-d116-4589-a751-b4f6f85bcca0.png"
+            src="{% static 'assets/20221127945114d5-d116-4589-a751-b4f6f85bcca0.png' %}"
             alt=""
             width="30"
           />
@@ -482,14 +482,11 @@
         let a = document.querySelectorAll('.undefinded')
         if(resultsOfUser.length){
           resultsOfUser.forEach(item =>{
-            console.log(item,"item")
             for (let i = 0; i < a.length; i++) {
               let trade_value_win = item.result == 'win' ? item.trade_value_win : `-${item.trade_value}`
               let element = a[i];
               let value = element.getAttribute('value',)
-              console.log(value)
               if(value == item.trade_id){
-                console.log('Chạy vào đây tiếp')
                 // Đoạn HTML cần chèn
                 var htmlToInsert = `<h4>${item.trade_value}(${trade_value_win})</h4>
                 <p class="total green">${item.a} + ${item.b} + ${item.c} = ${parseInt(item.a) + parseInt(item.b) +parseInt(item.c)} (${item.trade_type})</p>`;
@@ -554,15 +551,12 @@
   }
     chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
     let oldCron = response.message.code;
-    console.log(oldCron)
     chatSocket.onmessage = function(e){
         let another_user = []
         response = JSON.parse(e.data)
-        console.log(response)
         if(response.type =='cron'){
               callA()
               newCron = response.message.code
-              console.log(oldCron)
               oldCron = newCron
               clearInterval(countdownInterval);
               var existingElement2 = document.querySelector(".item.first-item");
@@ -606,7 +600,6 @@
           another_user.push(response.message)
         }
         
-        console.log(another_user)
         if(another_user.length){
           let abc = document.querySelector('#items-box')
           another_user.forEach(item =>{
