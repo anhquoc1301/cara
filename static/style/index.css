@@ -18,6 +18,10 @@
   padding-bottom: 2rem;
   background-color: #19243e;
 }
+.index .main-container .first-line .item p {
+  font-size: 1.6rem;
+
+}
 .index .main-container .second-line {
   padding: 2rem;
   height: 15rem;

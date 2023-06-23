@@ -161,4 +161,10 @@ html {
 .footer-info .item .title a {
   padding:  20px 10px;
  }
+
+
+
+div#chat-widget-container {
+  top: 0 !important;
+}
 /*# sourceMappingURL=app.css.map */

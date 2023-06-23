@@ -191,6 +191,7 @@
   background-color: rgba(24, 139, 102, 0.2);
 }
 .invest .content .part2 .item .right.red {
+  position: relative;
   background-color: rgba(250, 130, 130, 0.2);
 }
 .invest .content .part2 .item.first-item {
@@ -269,6 +270,9 @@
   padding: 1rem;
   background-size: 100% 100%;
   color: #fff;
+}
+.list-option-select div#v-pills-tabContent .list-select .option p {
+  font-size: 1.6rem;
 }
 .list-option-select div#v-pills-tabContent .list-select .option:first-child {
   background-image: url(https://ba.ruibcs.com/kaptcha/20220719b5a072e5-53e7-47ca-a806-547e45026bc5.png);

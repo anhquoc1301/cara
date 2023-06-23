@@ -53,6 +53,13 @@
         </span>
       </div>
       <div class="content">
+        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+        {% endif %}
         <div class="first-box">
             <div id="part1" class="part1">
               <form method="post" id="task-form">
@@ -133,7 +140,11 @@
                     >{{i.a}} + {{i.b}} + {{i.c}} = <span class="total">{{ i.a|add:i.b|add:i.c }}</span></span
                   >
                 </div>
-                <div class="right length-row red" value="{{i.a|add:i.b|add:i.c}}">No.{{i.code}}</div>
+                <div class="right length-row red" value="{{i.a|add:i.b|add:i.c}}">
+                  <span style="position: absolute;
+                  right: 0;">No.{{i.code}}<span>
+
+                  </div>
               </div>     
               {% endfor %}
             </div>
@@ -332,20 +343,80 @@
           <h1>USDT</h1>
           <div class="list-select">
             <div class="option">
+              {% if user.wallet %}
+              <a style="color:#00EE00;" href={% url 'app:invest' %}>
               <h2>Phòng sinh hoạt chung</h2>
-              <p>Giá tối thiểu để vào phòng là 0</p>
+              </a>
+              <p>
+                Giá tối thiểu để vào phòng là 0 <span>
+                  (bạn đã đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% else %}
+              <h2>Phòng sinh hoạt chung</h2>
+              <p>
+                Giá tối thiểu để vào phòng là 0 <span>
+                  (bạn không đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% endif %}
             </div>
             <div class="option">
-              <h2>Phòng sinh vip</h2>
-              <p>Giá tối thiểu để vào phòng là 30000</p>
+              {% if user.wallet > 30000  %}
+              <a style="color:#00EE00;" href={% url 'app:invest' %}>
+              <h2>Phòng Vip</h2>
+              </a>
+              <p>
+                Giá tối thiểu để vào phòng là 30000 <span>
+                  (bạn đã đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% else %}
+              <h2>Phòng Vip</h2>
+              <p>
+                Giá tối thiểu để vào phòng là 30000 <span>
+                  (bạn không đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% endif %}
             </div>
             <div class="option">
-              <h2>Phòng sinh superior</h2>
-              <p>Giá tối thiểu để vào phòng là 150000</p>
+              {% if user.wallet > 150000 %}
+              <a style="color:#00EE00;" href={% url 'app:invest' %}>
+              <h2>Phòng Superior</h2>
+              </a>
+              <p>
+                Giá tối thiểu để vào phòng là 150000 <span>
+                  (bạn đã đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% else %}
+              <h2>Phòng Superior</h2>
+              <p>
+                Giá tối thiểu để vào phòng là 150000 <span>
+                  (bạn không đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% endif %}
             </div>
             <div class="option">
-              <h2>Phòng sinh cao cấp</h2>
-              <p>Giá tối thiểu để vào phòng là 600000</p>
+              {% if user.wallet > 600000 %}
+              <a style="color:#00EE00;" href={% url 'app:invest' %}>
+              <h2>Phòng cao cấp</h2>
+              </a>
+              <p>
+                Giá tối thiểu để vào phòng là 600000 <span>
+                  (bạn đã đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% else %}
+              <h2>Phòng cao cấp</h2>
+              <p>
+                Giá tối thiểu để vào phòng là 600000 <span>
+                  (bạn không đạt điều kiện vào phòng)
+              </span>
+              </p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -358,19 +429,19 @@
           <h1>BTC</h1>
           <div class="list-select">
             <div class="option">
-              <h2>Phòng sinh hoạt chung</h2>
+              <h2>Phòng hoạt chung</h2>
               <p>Giá tối thiểu để vào phòng là 0</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh vip</h2>
+              <h2>Phòng Vip</h2>
               <p>Giá tối thiểu để vào phòng là 30000</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh superior</h2>
+              <h2>Phòng Superior</h2>
               <p>Giá tối thiểu để vào phòng là 150000</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh cao cấp</h2>
+              <h2>Phòng cao cấp</h2>
               <p>Giá tối thiểu để vào phòng là 600000</p>
             </div>
           </div>
@@ -388,15 +459,15 @@
               <p>Giá tối thiểu để vào phòng là 0</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh vip</h2>
+              <h2>Phòng Vip</h2>
               <p>Giá tối thiểu để vào phòng là 30000</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh superior</h2>
+              <h2>Phòng Superior</h2>
               <p>Giá tối thiểu để vào phòng là 150000</p>
             </div>
             <div class="option">
-              <h2>Phòng sinh cao cấp</h2>
+              <h2>Phòng cao cấp</h2>
               <p>Giá tối thiểu để vào phòng là 600000</p>
             </div>
           </div>
@@ -473,7 +544,7 @@
     if(timeNow < timeDataBase){
       timeNow = timeNow + 60*60*24
     }
-    let totalSeconds = 180 - (timeNow-timeDataBase)
+    let totalSeconds = 175 - (timeNow-timeDataBase)
     if(totalSeconds < 30){
       btnSubmit.setAttribute("disabled", true);
     }
@@ -512,7 +583,12 @@
                   >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
                 >
               </div>
-              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
+              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
+                <span style="position: absolute;
+                right: 0;">
+                No.${response.message.code}
+                </span>
+              </div>
             </div> `;
       existingElement.insertAdjacentHTML("afterend", htmlToInsert);
       itemsRows[4].remove()
@@ -542,7 +618,10 @@
                     >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
                   >
                 </div>
-                <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">No.${response.message.code}</div>
+                <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
+                  <span style="position: absolute;
+                  right: 0;">No.${response.message.code}</span>
+                </div>
               </div> `;
         existingElement.insertAdjacentHTML("afterend", htmlToInsert);
         itemsRows[4].remove()

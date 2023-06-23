@@ -7,7 +7,7 @@ from .views import list_user_not_referrer, set_user_referrer, add_staff, service
 from .views import admin_dashboard, detail_staff, detail_staff_last_month, staff_dashboard, set_phase_usdt, cancel_set_phase_usdt
 from .views import history_input_for_admin, history_output_for_admin
 from .views import add_method_for_guest, history_input_for_guest, history_output_for_guest, output_money_for_guest, input_money_for_guest
-from .views import change_password_for_guest, edit_password_wallet_for_guest
+from .views import change_password_for_guest, edit_password_wallet_for_guest, logout_admin, admin_login
 app_name='app'
 urlpatterns = [
     path('main/', main, name='main'),
@@ -55,4 +55,6 @@ urlpatterns = [
     path('input_money_for_guest/', input_money_for_guest, name='input_money_for_guest'),
     path('change_password_for_guest/', change_password_for_guest, name='change_password_for_guest'),
     path('edit_password_wallet_for_guest/', edit_password_wallet_for_guest, name='edit_password_wallet_for_guest'),
+    path('logout_admin/', logout_admin, name='logout_admin'),
+    path('admin_login/', admin_login, name='admin_login'),
 ]

@@ -104,11 +104,31 @@ class login(View):
             return redirect('app:staff_dashboard')
         elif myUser.type==3:
             return redirect('app:home')
+        
+def admin_login(request):
+    if request.user.is_authenticated:
+            return redirect('app:logout_admin')
+    if request.method=="POST":
+        username = request.POST.get('username')
+        password= request.POST.get('password')
+        myUser = authenticate(request, username=username, password=password)
+        if myUser is None:
+            messages.error(request, 'Sai tài khoản hoặc mật khẩu!')
+            return redirect('app:admin_login')
+        auth.login(request, myUser)
+        return redirect('app:admin_dashboard')
+    return render(request, 'home/adminlogin.html') 
+
 
 @login_required
 def logout(request):
     auth.logout(request)
     return redirect('app:login')
+
+@login_required
+def logout_admin(request):
+    auth.logout(request)
+    return redirect('app:admin_login')
 
 @login_required
 def home(request):
@@ -258,7 +278,7 @@ def input_money(request):
         value=int(request.POST.get('value'))
         user=User.objects.get(id=request.user.id)
         InputMoney.objects.create(value=value, user=user)
-        messages.success(request, 'Tạo lệnh rút tiền thành công!')
+        messages.success(request, 'Tạo lệnh nạp tiền thành công!')
         return redirect('app:input_money')
     return render(request, 'TradeBTC/recharge.html')
 
@@ -650,6 +670,7 @@ def cancel_set_phase_usdt(request):
     messages.success(request, 'Hủy thành công!')
     return redirect('app:set_phase_usdt')
 
+
 #Just Staff
 @login_required
 @staff_only
@@ -866,7 +887,8 @@ def cron(request):
             )
 
     # create phase
-    new_phase = PhaseUSDT.objects.create(code=random.randint(0000000, 9999999))
+    code=lastPhase.code +1
+    new_phase = PhaseUSDT.objects.create(code=code)
     set_phase = SetPhaseUSDT.objects.first()
     if set_phase.a == -1 or set_phase.b == -1 or set_phase.c == -1:
         had_set = False

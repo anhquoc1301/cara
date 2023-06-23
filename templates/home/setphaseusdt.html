@@ -28,10 +28,12 @@
                         <input type="text" class="form-control" id="inputPassword3" name="c" >
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-1">Đồng ý</button>
-                <button class="btn btn-primary mt-1">
-                    <a style="color:#fff;" href="{% url 'app:cancel_set_phase_usdt' %}">Hủy chỉnh phase</a>
-                </button>
+                <div style="display:flex;align-item:center;justify-content:space-between">
+                    <button type="submit" class="btn btn-primary mt-1">Đồng ý</button>
+                    <button class="btn btn-primary mt-1">
+                        <a style="color:#fff;" href="{% url 'app:cancel_set_phase_usdt' %}">Hủy chỉnh phase</a>
+                    </button>
+                </div>
             </form>
         </div>
     </div>

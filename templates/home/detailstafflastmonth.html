@@ -86,14 +86,11 @@
     <div class="card">
         <div class="card-body">
             <div class="chart-title"> 
-                  <div>
-                <h4>Mã nhân viên: {{staff.code}}</h4>
-                  </div>
-                <h4>Số lượng user: {{total_user}}</h4>
-                <div>
-                <h4>Lương cơ bản: {{basic_salary}}</h4>
-                </div>
-                <h4>Tổng lương: {{total_salary}}</h4>
+                  
+              <p>Mã nhân viên: <span> {{staff.code}}</span></p>
+              <p>Số lượng user: <span> {{total_user}}</span></p>
+              <p>Lương cơ bản: <span> {{basic_salary}}</span></p>
+              <p>Tổng lương: <span> {{total_salary}}</span></p>
                 <div class="float-right">
                   <button type="submit" class="btn btn-primary ml-5">
                                     <a  style="color:#fff;" href="{% url 'app:detail_staff' pk %}">Tháng này</a>
