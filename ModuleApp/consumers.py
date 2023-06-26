@@ -131,3 +131,11 @@ class DashboardConsumer(WebsocketConsumer):
             'type':'result_of_user',
             'message':message
         }))
+    
+    def result_of_last_phase_message(self, event):
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type':'result_of_last_phase',
+            'message':message
+        }))

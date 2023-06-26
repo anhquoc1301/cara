@@ -197,6 +197,19 @@
 .invest .content .part2 .item.first-item {
   display: block;
   color: #188b66;
+  
+}
+.loader2 {
+  animation: spin 3s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 .invest .content .part2 .end-part2 .total-today {
   color: #188b66;

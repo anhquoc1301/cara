@@ -131,7 +131,7 @@
 
             <div class="list-item">
               <div class="item first-item">
-                <i class="fa-solid fa-pause" ></i> <span id="socketTime"></span>
+                <i class="fa-solid fa-pause " ></i> <span id="socketTime"></span>
               </div>
               {% for i in last_phases %}
               <div class="item item-row">
@@ -140,7 +140,7 @@
                     >{{i.a}} + {{i.b}} + {{i.c}} = <span class="total">{{ i.a|add:i.b|add:i.c }}</span></span
                   >
                 </div>
-                <div class="right length-row red" value="{{i.a|add:i.b|add:i.c}}">
+                <div style="position: relative;" class="right length-row red" value="{{i.a|add:i.b|add:i.c}}">
                   <span style="position: absolute;
                   right: 0;">No.{{i.code}}<span>
 
@@ -544,7 +544,7 @@
     if(timeNow < timeDataBase){
       timeNow = timeNow + 60*60*24
     }
-    let totalSeconds = 175 - (timeNow-timeDataBase)
+    let totalSeconds = 177 - (timeNow-timeDataBase)
     if(totalSeconds < 30){
       btnSubmit.setAttribute("disabled", true);
     }
@@ -574,7 +574,8 @@
 
 
     }
-    if(totalSeconds < 0) {
+    {% comment %} if(totalSeconds < 0) {
+      console.log(123)
       firstChildElement.classList.add("fa-arrows-rotate");
       // Nội dung HTML mới cần chèn
       var htmlToInsert = `<div class="item item-row">
@@ -583,7 +584,7 @@
                   >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
                 >
               </div>
-              <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
+              <div style="position: relative;" class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
                 <span style="position: absolute;
                 right: 0;">
                 No.${response.message.code}
@@ -592,7 +593,7 @@
             </div> `;
       existingElement.insertAdjacentHTML("afterend", htmlToInsert);
       itemsRows[4].remove()
-    }
+    } {% endcomment %}
     function countdown() {
     if (totalSeconds > 0) {
       var minutes = Math.floor(totalSeconds / 60);
@@ -609,23 +610,7 @@
     } else if(totalSeconds == 0) {
       socketTime.innerHTML = "0:00"
       clearInterval(countdownInterval); // Dừng interval khi đếm ngược kết thúc
-      setTimeout(()=>{
-        firstChildElement.classList.add("fa-arrows-rotate");
-        // Nội dung HTML mới cần chèn
-        var htmlToInsert = `<div class="item item-row">
-                <div class="left">
-                  <span class="red green"
-                    >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
-                  >
-                </div>
-                <div class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
-                  <span style="position: absolute;
-                  right: 0;">No.${response.message.code}</span>
-                </div>
-              </div> `;
-        existingElement.insertAdjacentHTML("afterend", htmlToInsert);
-        itemsRows[4].remove()
-      }, 50);
+        firstChildElement.classList.add("fa-arrows-rotate","loader2");
     }
   }
     chatSocket.onopen = () => chatSocket.send(JSON.stringify({'message': 'normal' }))
@@ -633,6 +618,7 @@
     chatSocket.onmessage = function(e){
         let another_user = []
         response = JSON.parse(e.data)
+        console.log(response)
         if(response.type =='cron'){
               callA()
               newCron = response.message.code
@@ -640,9 +626,9 @@
               clearInterval(countdownInterval);
               var existingElement2 = document.querySelector(".item.first-item");
               var firstChildElement2 = existingElement2.querySelector(":first-child");
-              firstChildElement2.classList.remove("fa-arrows-rotate");
+              firstChildElement2.classList.remove("fa-arrows-rotate","loader2");
               phaseTime.innerHTML = `Phase: ${response.message.code}`       
-              totalSeconds = 175
+              totalSeconds = 177
               btnSubmit.removeAttribute("disabled");
               countdownInterval = setInterval(countdown, 1000);
         }else if(response.type =='user_trade'){
@@ -677,6 +663,20 @@
         }else if(response.type=="another_user"){
           another_user = []
           another_user.push(response.message)
+        } else if(response.type=="result_of_last_phase"){
+          var htmlToInsert = `<div class="item item-row">
+            <div class="left">
+              <span class="red green"
+                >${response.message.a} + ${response.message.b} + ${response.message.c} = <span class="total">${parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)}</span></span
+              >
+            </div>
+            <div style="position: relative;" class="right length-row red w-${Math.floor(10-27/Math.ceil(parseInt(response.message.a) + parseInt(response.message.b) + parseInt(response.message.c)))}" value="">
+              <span style="position: absolute;
+              right: 0;">No.${response.message.code}</span>
+            </div>
+          </div> `;
+          existingElement.insertAdjacentHTML("afterend", htmlToInsert);
+          itemsRows[4].remove()
         }
         
         if(another_user.length){

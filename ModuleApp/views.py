@@ -651,13 +651,76 @@ def admin_dashboard(request):
 def set_phase_usdt(request):
     set_phase = SetPhaseUSDT.objects.first()
     if request.method == 'POST':
-        a = int(request.POST['a'])
-        b = int(request.POST['b'])
-        c = int(request.POST['c'])
+        if request.POST['type'] == 'Long':
+            sum = -1
+            while sum < 14:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+
+        elif request.POST['type'] == 'Short':
+            sum = -1
+            while sum > 13 or sum ==-1:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'Single':
+            sum = -1
+            while sum %2 == 0 or sum ==-1:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'Double':
+            sum = -1
+            while sum %2 == 1:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'LS':
+            sum = -1
+            while sum %2 == 0 or sum < 14:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'SS':
+            sum = -1
+            while sum %2 == 0 or sum > 13 or sum==-1:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'LD':
+            sum = -1
+            while sum %2 == 1 or sum < 14 or sum==-1:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'SD':
+            sum = 99
+            while sum %2 == 1 or sum > 13:
+                a = random.randint(0, 9)
+                b = random.randint(0, 9)
+                c = random.randint(0, 9)
+                sum = a + b + c
+        elif request.POST['type'] == 'Maximum':
+            a = 9
+            b = 9
+            c = 9
+        elif request.POST['type'] == 'Minimum':
+            a = 0
+            b = 0
+            c = 0
         set_phase.a=a
         set_phase.b=b
         set_phase.c=c
         set_phase.save()
+
         messages.success(request, 'Thành công!')
         return redirect('app:set_phase_usdt')
     return render(request, 'home/setphaseusdt.html')
@@ -801,11 +864,33 @@ def invest(request):
 def cron(request):
     #get channel websocket
     channel_layer = get_channel_layer()
-
     # result last phase
     lastPhase = PhaseUSDT.objects.latest('create_at')
+    set_phase = SetPhaseUSDT.objects.first()
+    if set_phase.a == -1 or set_phase.b == -1 or set_phase.c == -1:
+        had_set = False
+    else:
+        had_set = True
+    lastPhase.input_phase(a=set_phase.a, b=set_phase.b,
+                          c=set_phase.c, had_set=had_set)
     lastPhase.phase_check=True
     lastPhase.save()
+    set_phase.refresh_phase_set()
+    message = {
+                "code": str(lastPhase.code),
+                "a": str(lastPhase.a),
+                "b": str(lastPhase.b),
+                "c": str(lastPhase.c),
+            }
+    
+    async_to_sync(channel_layer.group_send)(
+        'normal',
+        {
+            "type": "result_of_last_phase_message",
+            "message": message
+        },
+    )
+
     trades = TradeUSDT.objects.filter(phase=lastPhase)
     resultPhase = lastPhase.a+lastPhase.c+lastPhase.c
     for trade in trades:
@@ -889,21 +974,21 @@ def cron(request):
     # create phase
     code=lastPhase.code +1
     new_phase = PhaseUSDT.objects.create(code=code)
-    set_phase = SetPhaseUSDT.objects.first()
-    if set_phase.a == -1 or set_phase.b == -1 or set_phase.c == -1:
-        had_set = False
-    else:
-        had_set = True
-    new_phase.input_phase(a=set_phase.a, b=set_phase.b,
-                          c=set_phase.c, had_set=had_set)
-    set_phase.refresh_phase_set()
+    # set_phase = SetPhaseUSDT.objects.first()
+    # if set_phase.a == -1 or set_phase.b == -1 or set_phase.c == -1:
+    #     had_set = False
+    # else:
+    #     had_set = True
+    # new_phase.input_phase(a=set_phase.a, b=set_phase.b,
+    #                       c=set_phase.c, had_set=had_set)
+    # set_phase.refresh_phase_set()
 
     message = {
         "time": str(new_phase.create_at),
         "code": str(new_phase.code),
-        "a": str(new_phase.a),
-        "b": str(new_phase.b),
-        "c": str(new_phase.c)
+        # "a": str(new_phase.a),
+        # "b": str(new_phase.b),
+        # "c": str(new_phase.c)
     }
     async_to_sync(channel_layer.group_send)(
         'normal',
