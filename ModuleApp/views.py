@@ -15,6 +15,9 @@ import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .seriarlizers import ResultSerializer
 import math
 # Create your views here.
 
@@ -720,6 +723,7 @@ def set_phase_usdt(request):
         set_phase.b=b
         set_phase.c=c
         set_phase.save()
+        print(a, b, c)
 
         messages.success(request, 'Thành công!')
         return redirect('app:set_phase_usdt')
@@ -1049,3 +1053,71 @@ def edit_password_wallet_for_guest(request):
         return render(request, 'TradeBTC/changepasswithdrawmoney2forguest.html')
     else:
         return render(request, 'TradeBTC/changepasswithdrawmoney1forguest.html')
+    
+# api view
+
+class ResultTradeAdminAPIView(APIView):
+    def get(self, request):
+        set_phase = SetPhaseUSDT.objects.first()
+        new_phase=PhaseUSDT.objects.latest('create_at')
+        trades=TradeUSDT.objects.filter(phase=new_phase).order_by('-create_at')
+        long=trades.filter(trade_type='Long')
+        short=trades.filter(trade_type='Short')
+        double=trades.filter(trade_type='Double')
+        single=trades.filter(trade_type='Single')
+        ls=trades.filter(trade_type='LS')
+        ss=trades.filter(trade_type='SS')
+        ld=trades.filter(trade_type='LD')
+        sd=trades.filter(trade_type='SD')
+        max=trades.filter(trade_type='Maximum')
+        min=trades.filter(trade_type='Minimum')
+        long_value=0
+        short_value=0
+        single_value=0
+        double_value=0
+        ls_value=0
+        ss_value=0
+        ld_value=0
+        sd_value=0
+        max_value=0
+        min_value=0
+        for i in long:
+            long_value+=i.trade_value
+        for i in short:
+            short_value+=i.trade_value
+        for i in double:
+            double_value+=i.trade_value
+        for i in single:
+            single_value+=i.trade_value
+        for i in ls:
+            ls_value+=i.trade_value
+        for i in ss:
+            ss_value+=i.trade_value
+        for i in ld:
+            ld_value+=i.trade_value
+        for i in sd:
+            sd_value+=i.trade_value
+        for i in max:
+            max_value+=i.trade_value
+        for i in min:
+            min_value+=i.trade_value
+        results=ResultSerializer(trades, many=True)
+        data = {
+            'a': set_phase.a,
+            'b': set_phase.b,
+            'c': set_phase.c,
+            'phase_code': new_phase.code,
+            'data_trade': results.data,
+            'long_value':long_value,
+            'short_value': short_value,
+            'double_value': double_value,
+            'single_value': single_value,
+            'ls_value': ls_value,
+            'ss_value': ss_value,
+            'ld_value': ld_value,
+            'sd_value': sd_value,
+            'max_value': max_value,
+            'min_value': min_value,
+        }
+
+        return Response(data, status=201)

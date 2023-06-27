@@ -8,6 +8,7 @@ from .views import admin_dashboard, detail_staff, detail_staff_last_month, staff
 from .views import history_input_for_admin, history_output_for_admin
 from .views import add_method_for_guest, history_input_for_guest, history_output_for_guest, output_money_for_guest, input_money_for_guest
 from .views import change_password_for_guest, edit_password_wallet_for_guest, logout_admin, admin_login
+from .views import ResultTradeAdminAPIView
 app_name='app'
 urlpatterns = [
     path('main/', main, name='main'),
@@ -57,4 +58,5 @@ urlpatterns = [
     path('edit_password_wallet_for_guest/', edit_password_wallet_for_guest, name='edit_password_wallet_for_guest'),
     path('logout_admin/', logout_admin, name='logout_admin'),
     path('admin_login/', admin_login, name='admin_login'),
+    path('result_trade_admin/', ResultTradeAdminAPIView.as_view(), name='result_trade_admin'),
 ]

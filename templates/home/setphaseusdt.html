@@ -2,35 +2,154 @@
 
 {% extends 'index/index.html' %}
     {% block content %}
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <strong>Chỉnh phase</strong>
-        </div>
-        <div class="card-body">
-            <form action="" method="post">
-                {% csrf_token %} 
-                <h4>Chọn kết quả phase</h4>
-                <select name="type">
-                  <option value="Long">Long</option>
-                  <option value="Short">Short</option>
-                  <option value="Single">Single</option>
-                  <option value="Double">Double</option>
-                  <option value="LS">LS</option>
-                  <option value="SS">SS</option>
-                  <option value="LD">LD</option>
-                  <option value="SD">SD</option>
-                  <option value="Maximum">Maximum</option>
-                  <option value="Minimum">Minimum</option>
-                </select>
-                <div style="display:flex;align-item:center;justify-content:space-between">
-                    <button type="submit" class="btn btn-primary mt-1">Đồng ý</button>
-                    <button class="btn btn-primary mt-1">
-                        <a style="color:#fff;" href="{% url 'app:cancel_set_phase_usdt' %}">Hủy chỉnh phase</a>
-                    </button>
+    <div class="" id="setPhase">
+        <div class="content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <div class="phase phase-number" id="phaseId">Số Phase : #</div>
+                    <div class="phase result-phase">
+                      Kết quả hiện tại: -1 - -1 - -1
+                    </div>
+                  </div>
                 </div>
-            </form>
+                <div class="card-body">
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    <p class="title-phase">Chọn kết quả phase</p>
+                    <select name="type">
+                      <option value="Long">Long</option>
+                      <option value="Short">Short</option>
+                      <option value="Single">Single</option>
+                      <option value="Double">Double</option>
+                      <option value="LS">LS</option>
+                      <option value="SS">SS</option>
+                      <option value="LD">LD</option>
+                      <option value="SD">SD</option>
+                      <option value="Maximum">Maximum</option>
+                      <option value="Minimum">Minimum</option>
+                    </select>
+                    <div
+                      style="
+                        display: flex;
+                        align-item: center;
+                        justify-content: space-between;
+                        margin: 10px 0;
+                      "
+                    >
+                      <button type="submit" class="btn btn-primary mt-1">
+                        Đồng ý
+                      </button>
+                      <button class="btn btn-primary mt-1">
+                        <a
+                          style="color: #fff"
+                          href="{% url 'app:cancel_set_phase_usdt' %}"
+                          >Hủy chỉnh phase</a
+                        >
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="row list-long-short">
+                  <div
+                    class="col-md-6 column"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      padding: 30px 0;
+                    "
+                  >
+                    <div class="item" id="long_value">Tổng Long:</div>
+                    <div class="item" id="single_value">Tổng single:</div>
+                    <div class="item" id="ls_value">Tổng ls:</div>
+                    <div class="item" id="ss_value">Tổng ss:</div>
+                    <div class="item" id="max_value">Tổng max:</div>
+                  </div>
+                  <div
+                    class="col-md-6 column"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      padding: 30px 0;
+                    "
+                    id="column2"
+                  >
+                    <div class="item" id="short_value">Tổng short:</div>
+                    <div class="item" id="double_value">Tổng double:</div>
+                    <div class="item" id="ld_value">Tổng ld:</div>
+                    <div class="item" id="sd_value">Tổng sd:</div>
+                    <div class="item" id="min_value">Tổng min:</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">UserId</th>
+                    <th scope="col">Cửa đặt</th>
+                    <th scope="col">Số tiền đặt</th>
+                  </tr>
+                </thead>
+                <tbody class="body-table">
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    </div>
-</div>
-    {% endblock %}
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+      <script>
+        let bodyTable = document.querySelector('.body-table')
+        function handleRequest() {
+        let phaseId = document.querySelector('#phaseId')
+        let phaseResult = document.querySelector('.result-phase')
+        let items = document.querySelectorAll('.column .item')
+        phaseResult.innerHTML=""
+        phaseId.innerHTML = ""
+        bodyTable.innerHTML = ""
+        try {
+            axios.get("http://127.0.0.1:8000/result_trade_admin/").then(function (response) {
+                let res =  response.data
+                phaseId.innerHTML=  `Số phase: #${res.phase_code} `
+                phaseResult.innerHTML= `Kết quả hiện tại: ${res.a} - ${res.b} - ${res.c}`
+                for (let i = 0; i < items.length; i++) {
+                    let key = items[i].id
+                    items[i].innerHTML = `Tổng ${key.split("_")[0]}: ${res[key]} `
+                } 
+                let dataTrade = res.data_trade
+                dataTrade.forEach((e,index) => {
+                    const html = `                  <tr>
+                        <th scope="row">${index +1 }</th>
+                        <td>${e.user_name}</td>
+                        <td>${e.user_code}</td>
+                        <td>${e.trade_type}</td>
+                        <td>${e.trade_value}</td>
+                      </tr>`
+                    bodyTable.insertAdjacentHTML('beforeend', html);
+                })
+            })          
+          } catch (error) {
+            console.log(error)
+          }    
+        }
+        setInterval( () => {
+        handleRequest()
+        } , 2000)
+        
+      </script>
+      {% endblock %}
+
